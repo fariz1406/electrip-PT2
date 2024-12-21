@@ -25,5 +25,16 @@ class Pesanan extends Model
         {
             return $this->belongsTo(User::class, 'user_id', 'id');
         }
+
+        /**
+     * Mendefinisikan relasi dengan payment.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'id'); // Sesuaikan foreign key jika berbeda
+    }
+    
 }
 

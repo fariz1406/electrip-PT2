@@ -20,11 +20,12 @@ return new class extends Migration
             $table->dateTime('tanggal_mulai')->nullable();
             $table->dateTime('tanggal_selesai')->nullable();
             $table->string('lokasi')->nullable();
-            $table->decimal('latitude', 10, 8);  // Latitude
-            $table->decimal('longitude', 11, 8); // Longitude
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 11, 8);
             $table->decimal('biaya', 10, 0)->nullable();
             $table->text('pesan')->nullable();
             $table->enum('status', ['belum_dibayar', 'diproses', 'dikirim', 'dipakai', 'selesai'])->default('belum_dibayar');
+            $table->enum('payment_status', ['unpaid', 'paid', 'failed'])->default('unpaid');
             $table->timestamps();
         });
     }

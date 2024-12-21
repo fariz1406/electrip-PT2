@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pesanan saya</title>
   <link rel="stylesheet" href="{{ asset('css/pesanan.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -61,7 +62,7 @@
 
       <div class="text">
         <h2>Merk : {{ $data->kendaraan->nama }}</h2>
-        <h3>Biaya : Rp. {{ $data->biaya }}</h3>
+        <h3>Biaya : Rp. {{ number_format($data->biaya, 0, ',', '.') }}</h3>
 
         <hr class="garis">
         <h3 class="alamat">Berakhir pada tanggal {{ \Carbon\Carbon::parse($data->tanggal_selesai)->format('Y-m-d') }} Jam {{ \Carbon\Carbon::parse($data->tanggal_selesai)->format('H:i') }} WIB</h3>
@@ -79,44 +80,48 @@
       </div>
       <div class="tombol">
         <form action=""></form>
-        <a href="">
-          <button type="submit" name="bayar" class="done"><b>Selesai</b></button></a>
+        <button class="btn-selesai done" data-order-id="{{ $data->id }}">Selesai</button>
+
       </div>
 
     </div>
 
     <div id="modal-tambah-durasi" class="popup">
       <form action="{{ route('pesanan.tambahDurasi', $data->id) }}" id="form-tambah-durasi" method="POST">
-      <div class="isi-popup">
-        <h2>Silahkan pilih <br>
-          <span style="color: #ffcc00;">Tanggal dan Waktu</span> Terbaru
-        </h2>
+        <div class="isi-popup">
+          <h2>Silahkan pilih <br>
+            <span style="color: #ffcc00;">Tanggal dan Waktu</span> Terbaru
+          </h2>
           @csrf
           @method('PUT')
+          <input type="hidden" name="order_id" id="order-id">
+          <input type="hidden" name="harga_per_hari" id="harga-per-hari" value="{{ $data->kendaraan->harga }}"> <!-- Harga per hari -->
           <input type="datetime-local" name="tanggal_selesai" id="datetime" required>
           <input type="hidden" name="order_id" id="order-id">
 
-      </div>
-      <div class="tombol-popup-wrapper">
-        <button type="button" class="tombol-popup batal-popup" id="btn-batal" onclick="closeModal()">Batal</button>
-      <button type="submit" class="tombol-popup oke-popup">Simpan</button>
-      </div>
+        </div>
+        <div class="tombol-popup-wrapper">
+          <button type="button" class="tombol-popup batal-popup" id="btn-batal" onclick="closeModal()">Batal</button>
+          <button type="submit" class="tombol-popup oke-popup">Simpan</button>
+        </div>
       </form>
     </div>
-<!-- 
-    <div id="modal-tambah-durasi" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); z-index: 999;">
-      <h3>Tambah Durasi</h3>
-      <form action="{{ route('pesanan.tambahDurasi', $data->id) }}" id="form-tambah-durasi" method="POST">
-        @csrf
-        @method('PUT')
-        <label for="datetime">Masukkan Tanggal dan Waktu Baru:</label>
-        <input type="datetime-local" name="tanggal_selesai" id="datetime" required>
-        <input type="hidden" name="order_id" id="order-id">
-        <button type="submit">Simpan</button>
-        <button type="button" id="btn-batal" onclick="closeModal()">Batal</button>
-      </form>
-    </div> -->
 
+    <!-- pop up fungsi selesai -->
+
+    <div id="modal-konfirmasi-selesai" class="popup">
+    <!-- <form action="{{ route('pesanan.selesai', $data->id) }}" method="POST"> -->
+      <div class="isi-popup">
+        <h2>Apakah Anda Yakin <br>
+          <span style="color: #ffcc00;">Pesanan</span> Telah Selesai?
+        </h2>
+      </div>
+      <div class="tombol-popup-wrapper">
+        <button id="btn-batal-selesai" class="tombol-popup batal-popup" >Batal</button>
+        <button id="btn-ya-selesai" class="tombol-popup oke-popup">Selesai</button>
+      </div>
+    <!-- </form> -->
+    </div>
 
     @endforeach
 
@@ -174,6 +179,53 @@
       }
     });
   });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("modal-konfirmasi-selesai");
+  const overlay = document.getElementById("modal-overlay");
+  let selectedOrderId = null; // Menyimpan ID pesanan yang dipilih
+
+  // Event listener untuk tombol "Selesai"
+  document.querySelectorAll(".btn-selesai").forEach(button => {
+    button.addEventListener("click", function () {
+      selectedOrderId = this.getAttribute("data-order-id"); // Ambil ID pesanan
+      modal.style.display = "block";
+      overlay.style.display = "block";
+    });
+  });
+
+  // Event listener untuk tombol "Ya" di modal
+  document.getElementById("btn-ya-selesai").addEventListener("click", function () {
+    if (selectedOrderId) {
+      // Kirim permintaan update status menggunakan fetch
+      fetch(`/pesanan/selesai/${selectedOrderId}`, {
+        method: "PUT",
+        headers: {
+          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+          "Content-Type": "application/json"
+        },
+      })
+
+    }
+    // Tutup modal
+    modal.style.display = "none";
+    overlay.style.display = "none";
+  });
+
+  // Event listener untuk tombol "Batal" di modal
+  document.getElementById("btn-batal-selesai").addEventListener("click", function () {
+    modal.style.display = "none";
+    overlay.style.display = "none";
+  });
+
+  // Tutup modal jika overlay diklik
+  overlay.addEventListener("click", function () {
+    modal.style.display = "none";
+    overlay.style.display = "none";
+  });
+});
 </script>
 
 </html>

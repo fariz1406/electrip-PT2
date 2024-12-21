@@ -10,7 +10,8 @@
     /* Background umum dan kontainer utama */
     body {
         font-family: Arial, sans-serif;
-        background-color: #F4F4F9;
+        background-color: #121212;
+        color: white;
         margin: 0;
         padding: 0;
         display: flex;

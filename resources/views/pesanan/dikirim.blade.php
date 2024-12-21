@@ -46,8 +46,8 @@
 
         <div class="tombol">
           <form action=""></form>
-            <a href="">
-            <button type="submit" name="bayar"><b>Bayar Sekarang</b></button></a>
+          <a href="{{ route('pesanan.map', $data->id) }}">
+          <button type="submit" name="bayar"><b>Detail</b></button></a>
 
         </div>
 

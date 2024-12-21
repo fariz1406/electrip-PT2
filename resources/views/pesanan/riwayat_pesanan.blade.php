@@ -35,10 +35,10 @@
 
         <div class="text">
           <h2>Merk : {{ $data->kendaraan->nama }}</h2>
-          <h3>Biaya : RP. {{ $data->biaya }}</h3>
+          <h3>Biaya : Rp. {{ number_format($data->biaya, 0, ',', '.') }}</h3>
 
           <hr class="garis">
-          <h3 class="alamat">Di Jemput atau Diantar Ke : {{ $data->lokasi }}</h3>
+          <h3 class="alamat"><h3 class="alamat">Dari tanggal <span style="color: green;">{{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('H:i') }}</span> WIB Sampai <span style="color: red;">{{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($data->selesai)->format('H:i') }}</span> WIB</h3></h3>
 
         </div>
 
@@ -46,8 +46,8 @@
 
         <div class="tombol">
           <form action=""></form>
-            <a href="">
-            <button type="submit" name="bayar"><b>Bayar Sekarang</b></button></a>
+            <a href="{{ route('pesanan.penggunaDetail', $data->id) }}">
+            <button type="submit" name="bayar"><b>Detail</b></button></a>
 
         </div>
 

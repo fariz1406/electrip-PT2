@@ -8,11 +8,11 @@ body {
 
 .container {
     width: 75%;
+    margin-left: 25%;
     height: auto;
     z-index: 0;
     background-color: #5b5b5b;
     margin-right: 0;
-    margin-left: 25%;
     text-align: center;
 }
 

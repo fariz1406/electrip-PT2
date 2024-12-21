@@ -30,7 +30,7 @@
           <th>Tanggal Pakai</th>
           <th>Tanggal Selesai</th>
           <th>Status</th>
-          <th class="text-align">Action</th>
+          <th class="text-align">Detail</th>
         </tr>
       </thead>
       <tbody>
@@ -57,8 +57,10 @@
               <button type="submit" style="display: none;">Update Status</button>
             </td>
             <td class="edit">
-              ....
-            </td>
+                            <a href="{{ route('pesanan.detail', $data->id) }}">
+                                <span class="material-symbols-outlined">edit_square</span>
+                            </a>
+                        </td>
 
             <!-- Modal konfirmasi -->
             <div id="confirmationModal-{{ $data->id }}" class="confirmationModal" style="display:none; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 20px; color: white; z-index: 999;">
