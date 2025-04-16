@@ -27,6 +27,7 @@ body {
 
 .container h2 {
   text-align: center;
+  margin-bottom: 15px;
 }
 
 .sudah_verifikasi {
@@ -199,7 +200,7 @@ input[type="date"] {
   height: 35px;
   border: 1px solid black;
   color: #0c0c0c;
-  border-radius: 15px;
+  border-radius: 10px;
   margin-right: 30px;
   margin-left: 20px;
 }

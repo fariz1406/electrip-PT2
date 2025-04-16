@@ -33,7 +33,7 @@ class Pesanan extends Model
      */
     public function payments()
     {
-        return $this->hasMany(Payment::class, 'id'); // Sesuaikan foreign key jika berbeda
+        return $this->hasMany(Payment::class, 'pesanan_id');
     }
     
 }

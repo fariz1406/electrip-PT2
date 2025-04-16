@@ -22,6 +22,7 @@ class Payment extends Model
     // Dalam model Payment
     public function pesanan()
     {
-        return $this->belongsTo(Pesanan::class);
+        return $this->belongsTo(Pesanan::class, 'pesanan_id');
     }
+    
 }

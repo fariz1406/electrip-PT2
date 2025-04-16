@@ -14,33 +14,24 @@
   @include('partials.sidebar')
 
   <div class="wrapper2"></div>
-  <div class="container">
-    <h2>Profil</h2>
-    <form action="edit_profil.php" method="post" enctype="multipart/form-data">
+  <div class="profile-container">
 
-      <div class="wrapper-img">
-        <div class="image-box">
-          <img src="{{ asset('img/profil/'. $profil->foto_profil) }}" />
-        </div>
-      </div>
+    <div class="profile-header">
+      <img src="{{ asset('img/profil/'. $profil->foto_profil) }}" alt="Foto Profil" class="profile-photo"/>
+      <h1 class="profile-name">{{ $user->name }}</h1>
+      <p class="profile-role">Pengguna</p>
+    </div>
+    <div class="profile-info">
+      <h2>Informasi Akun</h2>
+      <p><strong>Email:</strong> {{ $user->email }}</p>
+      <p><strong>Telepon:</strong> {{ $profil->telepon }}</p>
+      <p class="profile-description">"{{ $profil->deskripsi }}"</p>
+    </div>
+    <div class="profile-actions">
+      <a href="{{ route('profil.edit', $profil->id) }}"><button class="btn-edit">Edit Profil</button></a>
+    </div>
 
-      <div class="input1">
-        <p>{{ $user->name }}</p>
-      </div>
-      <div class="input2">
-        <p>{{ $profil->telepon }}</p>
-      </div>
-      
-      <div class="input3">
-        <p>{{ $profil->deskripsi }}</p>
-      </div>
-
-      <div class="Button">
-        <a href="{{ route('profil.edit', $profil->id) }}">edit</a>
-      </div>
-    </form>
   </div>
-
 </body>
 
 </html>

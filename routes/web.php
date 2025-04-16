@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
@@ -13,27 +14,30 @@ use App\Models\Profil;
 
 Route::get('/testing', function () {
     return view('testing');
-});
+})->name('testing');
+
+Route::get('/bantuanDukungan', function () {
+    return view('bantuandukungan');
+})->name('bantuanDukungan');
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/submitRegister', [AuthController::class, 'submitRegister'])->name('submitRegister');
 
-Route::get('/', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/submitLogin', [AuthController::class, 'submitLogin'])->name('submitLogin');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/payment/midtrans-callback', [PaymentController::class, 'midtransCallback']);
 
-Route::middleware('auth', 'pengguna')->group(function () {
+// Route::middleware('auth', 'pengguna')->group(function () {
     //pengguna
 
-    Route::get('/beranda', [VerifikasiUser::class, 'beranda'])->name('beranda');
-
+    Route::get('/', [VerifikasiUser::class, 'beranda'])->name('beranda');
 
     Route::get('/pilihan', [KendaraanController::class, 'pilihan'])->name('pilihan');
     Route::get('/pilihanMotor', [KendaraanController::class, 'pilihanMotor'])->name('pilihanMotor');
-
+    Route::get('/kendaraan/{id}', [KendaraanController::class, 'detail'])->name('kendaraan.detail');
 
     Route::get('/pesanan/checkout/{id}', [pesananController::class, 'checkout'])->name('pesanan.checkout');
     Route::post('/pesanan/submit/{id}', [pesananController::class, 'submit'])->name('pesanan.submit');
@@ -58,7 +62,9 @@ Route::middleware('auth', 'pengguna')->group(function () {
 
     Route::get('/Verifikasi/User', [VerifikasiUser::class, 'index'])->name('verifikasi.index');
     Route::post('/Verifikasi/User', [VerifikasiUser::class, 'store'])->name('verifikasi.store');
-});
+    Route::get('/Verifikasi/edit/{id}', [VerifikasiUser::class, 'edit'])->name('verifikasi.edit');
+    Route::put('/Verifikasi/update/{id}', [VerifikasiUser::class, 'update'])->name('verifikasi.update');
+// });
 
 Route::middleware('auth', 'admin')->group(function () {
     //admin
@@ -71,10 +77,12 @@ Route::middleware('auth', 'admin')->group(function () {
 
     Route::get('/kendaraan', [KendaraanController::class, 'tampil'])->name('kendaraan.tampil');
     Route::get('/kendaraan/tambah', [KendaraanController::class, 'tambah'])->name('kendaraan.tambah');
+    Route::get('/kendaraan/tambahin', [KendaraanController::class, 'tambahin'])->name('kendaraan.tambahin');
+    Route::get('/kendaraan/tambahh', [KendaraanController::class, 'tambah'])->name('kendaraan.tambahh');
     Route::post('/kendaraan/submit', [KendaraanController::class, 'submit'])->name('kendaraan.submit');
     Route::get('/kendaraan/edit/{id}', [KendaraanController::class, 'edit'])->name('kendaraan.edit');
     Route::post('/kendaraan/update/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
-    Route::get('/kendaraan/delete/{id}', [KendaraanController::class, 'delete'])->name('kendaraan.delete');
+    Route::post('/kendaraan/delete/{id}', [KendaraanController::class, 'delete'])->name('kendaraan.delete');
 
     Route::get('/admin/pesananData', [pesananController::class, 'tampil'])->name('pesanan.data');
     Route::put('admin/pesanan/updateStatus/{id}', [pesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
@@ -86,3 +94,6 @@ Route::middleware('auth', 'admin')->group(function () {
 
     Route::get('/admin/usersData', [AuthController::class, 'tampil'])->name('users.tampil');
 });
+
+Route::get('/finance/dashboard', [FinanceController::class, 'dashboard'])->name('finance.dashboard');
+Route::get('/finance/dataPesanan', [FinanceController::class, 'dataPesanan'])->name('finance.dataPesanan');

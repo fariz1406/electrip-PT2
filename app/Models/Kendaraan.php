@@ -16,6 +16,8 @@ class Kendaraan extends Model
     //method untuk mengambil kendaraan berdasarkan kategori
     public static function ambilKategori($kategori)
     {
-        return self::where('kategori_id', $kategori)->get();
+        return self::where('kategori_id', $kategori)
+        ->where('status', 'tersedia')
+        ->get();
     }
 }

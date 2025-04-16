@@ -11,11 +11,7 @@
     @include('partials.sidebar_admin')
 
     <div class="container">
-        <div class="menu-pilihan">
-            <a href="{{ route('validasi.verifikasi') }}" style="text-decoration: underline; color:#ffcc00">
-                <h2>PENGGUNA</h2>
-            </a>
-        </div>
+
 
         <hr>
 
@@ -41,9 +37,12 @@
                         <td>{{ $verifikasi->kelamin }}</td>
                         <td>{{ $verifikasi->validasi }}</td>
                         <td class="edit">
+                            @if($verifikasi->validasi == 'setuju')
+                            @else
                             <a href="{{ route('validasi.verifikasi.detail', $verifikasi->id) }}">
                                 <span class="material-symbols-outlined">edit_square</span>
                             </a>
+                            @endif
                         </td>
                     </tr>
                 @empty

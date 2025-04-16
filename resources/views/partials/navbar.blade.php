@@ -111,10 +111,25 @@
         <li><a href="{{ route('beranda') }}">BERANDA</a></li>
         @if(isset($dataAda) && $dataAda->validasi == 'setuju')
         <li><a href="{{ route('pilihan') }}">PESAN SEKARANG</a></li>
+        @else
+        <li><a href="">PESAN SEKARANG</a></li>
         @endif
-        <li><a href="{{ route('profil.tampil') }}">PROFIL</a></li>
-        <li class="foto-navbar">
-          <img src="{{ asset('img/profil/'. optional(Auth::user()->profil)->foto_profil ?? '1731828452.jpeg') }}" alt="Profile Picture">
+        @if (Auth::id() == "")  
+        <!-- konten guest -->
+        @else
+          @if ($profil)
+          <li><a href="{{ route('profil.tampil') }}">PROFIL</a></li>
+          <div class="foto-navbar">
+          <img src="{{ asset('img/profil/'. optional(Auth::user()->profil)->foto_profil) }} " />
+          </div>
+          @else
+          <li><a href="{{ route('profil.tampil') }}">PROFIL</a></li>
+          <div class="foto-navbar">
+          <img src="{{ asset('img/Profile_user.png') }} " />
+          </div>
+          @endif
+        @endif
+
         </li>
       </ul>
     </div>

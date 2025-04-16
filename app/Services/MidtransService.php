@@ -48,7 +48,7 @@ class MidtransService
         // data transaksi
         $params = [
             'transaction_details' => [
-                'order_id' => $Pesanan->id, // Menggunakan order_id dari pesanan
+                'order_id' => 'ORDER-' . $Pesanan->id . '-' . time(), // Menggunakan order_id dari pesanan
                 'gross_amount' => $Pesanan->biaya,
             ],
             'item_details' => $this->mapItemsToDetails($Pesanan),
@@ -74,9 +74,11 @@ class MidtransService
         $notification = new Notification();
 
         // Membuat signature key lokal dari data notifikasi
-        $localSignatureKey = hash('sha512',
+        $localSignatureKey = hash(
+            'sha512',
             $notification->order_id . $notification->status_code .
-            $notification->gross_amount . $this->serverKey);
+                $notification->gross_amount . $this->serverKey
+        );
 
         // Memeriksa apakah signature key valid
         return $localSignatureKey === $notification->signature_key;
@@ -91,9 +93,12 @@ class MidtransService
     {
         $notification = new Notification();
 
-        // Mengambil data Pesanan dari database berdasarkan Pesanan_id
-        return Pesanan::where('id', $notification->order_id)->first();
+        // Pisahkan order_id untuk mendapatkan ID sebenarnya
+        $orderId = explode('-', $notification->order_id)[1] ?? null;
+
+        return Pesanan::where('id', $orderId)->first();
     }
+
 
     /**
      * Mendapatkan status transaksi berdasarkan status yang diterima dari notifikasi Midtrans.
@@ -148,14 +153,14 @@ class MidtransService
     protected function getCustomerDetails(Pesanan $Pesanan): array
     {
         $user = $Pesanan->users; // Ambil user yang terkait dengan pesanan
-        
+
         return [
             // 'first_name' => $user->name,
             // 'email' => $user->email,
             // 'phone' => $user->name,
 
-            'first_name' => 'contoh',
-            'email' => 'email@gmail.com',
+            'first_name' => 'Ferdi Indra Satriady',
+            'email' => 'ferd@gmail.com',
             'phone' => '085211451129',
         ];
     }

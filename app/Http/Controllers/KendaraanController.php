@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kendaraan;
 use App\Models\penggunaVerif;
+use App\Models\Profil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -23,43 +24,60 @@ class KendaraanController extends Controller
 
     function pilihan(Request $request)
     {
-        $kendaraan = new Kendaraan;
-        $kendaraan = Kendaraan::ambilKategori('1');
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
-        return view('pilihanMobil', compact('kendaraan', 'request', 'dataAda'));
+        if ($request->get('search')) {
+            $kendaraan = Kendaraan::where('kategori_id', '1')->where('status', 'tersedia')->where('nama', 'like', '%' . $request->get('search') . '%')->get();
+        }else{
+            $kendaraan = Kendaraan::where('kategori_id', '1')->where('status', 'tersedia')->get();
+        }
+
+        return view('pilihanMobil', compact('kendaraan', 'request', 'dataAda', 'profil'));
     }
 
     function pilihanMotor(Request $request)
     {
-        $kendaraan = new Kendaraan;
-        $kendaraan = Kendaraan::ambilKategori('2');
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
-
+        $profil = Profil::where('user_id', $user_id)->first();
 
         if ($request->get('search')) {
-            $kendaraan = $kendaraan->where('nama', 'like', '%' . $request->get('search') . '%');
+            $kendaraan = Kendaraan::where('kategori_id', '2')->where('status', 'tersedia')->where('nama', 'like', '%' . $request->get('search') . '%')->get();
+        }else{
+            $kendaraan = Kendaraan::where('kategori_id', '2')->where('status', 'tersedia')->get();
         }
 
-        return view('pilihanMotor', compact('kendaraan', 'request', 'dataAda'));
+        return view('pilihanMotor', compact('kendaraan', 'request', 'dataAda', 'profil'));
+    }
+
+    public function detail($id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+        return response()->json($kendaraan);
     }
 
 
     function tambah()
     {
+        $kendaraan = Kendaraan::get();
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
-        return view('admin.kendaraan.tambah', compact('dataAda'));
+        return view('admin.kendaraan.tambah', compact('dataAda', 'kendaraan'));
+    }
+
+    function tambahin()
+    {
+        $user_id = Auth::id();
+
+        return view('admin/kendaraan/tambahin');
     }
 
     function submit(Request $request)
     {
-        //perfotoan
 
-        // Validasi input untuk memastikan file yang diunggah adalah gambar
         $request->validate([
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stnk' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -83,7 +101,7 @@ class KendaraanController extends Controller
         }
 
         $kendaraan = new Kendaraan();
-        $kendaraan->kategori_id = $request->kategori;
+        $kendaraan->kategori_id = $request->kategori_id;
         $kendaraan->nama = $request->nama;
         $kendaraan->foto = $fotoName;
         $kendaraan->deskripsi = $request->deskripsi;
@@ -107,11 +125,9 @@ class KendaraanController extends Controller
     {
         $kendaraan = Kendaraan::find($id);
 
-        // Periksa apakah ada file foto yang diunggah
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
 
-            // Simpan foto baru di direktori 'public/img/kendaraan'
             $newFileName = time() . '_' . $foto->getClientOriginalName();
             $foto->move(public_path('img/kendaraan'), $newFileName);
 
@@ -119,19 +135,15 @@ class KendaraanController extends Controller
             $kendaraan->foto = $newFileName;
         }
 
-        // Periksa apakah ada file foto yang diunggah
         if ($request->hasFile('stnk')) {
             $stnk = $request->file('stnk');
 
-            // Simpan stnk baru di direktori 'public/img/kendaraan'
             $newStnkName = time() . '_' . $stnk->getClientOriginalName();
             $stnk->move(public_path('img/kendaraan'), $newStnkName);
 
-            // Update path stnk di database
             $kendaraan->stnk = $newStnkName;
         }
 
-        $kendaraan->kategori_id = $request->kategori;
         $kendaraan->nama = $request->nama;
         $kendaraan->deskripsi = $request->deskripsi;
         $kendaraan->harga = $request->harga;

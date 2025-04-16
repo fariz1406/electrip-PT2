@@ -14,30 +14,22 @@
   @include('partials.sidebar')
 
   <div class="wrapper2"></div>
-  <div class="container">
-    <h2>Profil</h2>
-    <form action="edit_profil.php" method="post" enctype="multipart/form-data">
+  <div class="profile-container">
 
-      <div class="wrapper-img">
-        <div class="image-box">
-          <img src="{{ asset('img/Profile_user.png') }}" />
-        </div>
-      </div>
+    <div class="profile-header">
+      <img src="{{ asset('img/Profile_user.png') }}" alt="Foto Profil" class="profile-photo"/>
+      <h1 class="profile-name">{{ $user->name }}</h1>
+      <p class="profile-role">{{ $user->email }}</p>
+    </div>
+    <div class="profile-info">
+    <h1 class="profile-name" style="text-align: center;">Profil Kosong</h1>
 
-      <div class="input1">
-        <p>{{ $user->name }}</p>
-      </div>
-      
-      <div class="input3">
-        <p>belum buat profil</p>
-      </div>
+    </div>
+    <div class="profile-actions">
+      <a href="{{route('profil.tambah')}}"><button class="btn-edit">Buat Profil</button></a>
+    </div>
 
-      <div class="Button">
-        <a href="{{route('profil.tambah')}}">buat</a>
-      </div>
-    </form>
   </div>
-
 </body>
 
 </html>

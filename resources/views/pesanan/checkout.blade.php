@@ -165,6 +165,15 @@
   </div>
 
   <script>
+    // Mengatur tanggal minimum untuk input datetime-local ke tanggal besok
+    document.addEventListener('DOMContentLoaded', function () {
+      const today = new Date();
+      today.setDate(today.getDate() + 1); // Menambahkan 1 hari untuk mendapatkan tanggal besok
+      const formattedDate = today.toISOString().slice(0, 16); // Format YYYY-MM-DDTHH:MM
+      document.getElementById('tanggal_mulai').setAttribute('min', formattedDate);
+      document.getElementById('tanggal_selesai').setAttribute('min', formattedDate);
+    });
+
     const map = L.map('map').setView([-6.973040, 107.630895], 15); // Pusat peta
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -172,10 +181,7 @@
 
     let marker;
     map.on('click', function(e) {
-      const {
-        lat,
-        lng
-      } = e.latlng;
+      const { lat, lng } = e.latlng;
       if (marker) {
         marker.setLatLng([lat, lng]);
       } else {
@@ -191,8 +197,7 @@
           document.getElementById('lokasi').value = data.display_name;
         });
     });
-  </script>
-<script>
+
     document.getElementById('tanggal_mulai').addEventListener('change', function () {
         const startDateInput = document.getElementById('tanggal_mulai');
         const endDateInput = document.getElementById('tanggal_selesai');
@@ -220,9 +225,9 @@
         const adjustedDate = new Date(date - offset); // Sesuaikan waktu berdasarkan timezone
         return adjustedDate.toISOString().slice(0, 16); // Format ke datetime-local (YYYY-MM-DDTHH:mm)
     }
-</script>
-
-
+  </script>
 </body>
+
+
 
 </html>

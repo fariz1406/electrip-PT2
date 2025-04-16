@@ -63,7 +63,7 @@
         <input type="file" name="foto_ktp" required>
       </div>
 
-      <div class="input7">
+      <div class="input6">
         <label for="foto_sim">Foto SIM</label>
         <input type="file" name="foto_sim" required>
       </div>
@@ -75,7 +75,7 @@
 
       <!-- Tombol Submit -->
       <div class="Button">
-        <button type="simpan">Kirim Verifikasi</button>
+        <button type="simpan" class="simpan">Kirim Verifikasi</button>
       </div>
     </form>
   </div>

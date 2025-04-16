@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\penggunaVerif;
+use App\Models\Profil;
 
 class VerifikasiUser extends Controller
 {
@@ -13,13 +14,22 @@ class VerifikasiUser extends Controller
     {
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
 
         if (!session()->has('first_login_done')) {
             session(['first_login_done' => true]);
-            return view('beranda', compact('dataAda'))->with('isFirstLogin', true);
+            return view('beranda', compact('dataAda', 'profil', 'user_id'))->with('isFirstLogin', true);
         }
-        return view('beranda', compact('dataAda'))->with('isFirstLogin', false);
+        if ($user_id == ""){
+
+        return view('beranda');
+
+        }else {
+
+        return view('beranda', compact('dataAda', 'profil', 'user_id'))->with('isFirstLogin', false);
+
+        }
     }
 
     public function index()
@@ -30,15 +40,29 @@ class VerifikasiUser extends Controller
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
 
         if ($dataAda) {
-            return view('verifikasi.verifikasi-sudah', compact('dataAda','verifikasi'));
+            return view('verifikasi.verifikasi-sudah', compact('dataAda','verifikasi', 'profil'));
         } else {
-            return view('verifikasi.verifikasi', compact('dataAda','verifikasi'));
+            return view('verifikasi.verifikasi', compact('dataAda','verifikasi', 'profil'));
         }
 
-        return view('verifikasi.verifikasi', compact('dataAda'));
+        return view('verifikasi.verifikasi', compact('dataAda', 'verifikasi', 'profil'));
+    }
+
+    public function edit($id)
+    {
+        // Mengambil pengguna saat ini  
+        $user_id = Auth::id();
+        $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+
+        $user = Auth::user();
+        $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
+
+        return view('verifikasi.verifikasi-update', compact('dataAda', 'verifikasi', 'profil', 'user_id'));
     }
 
     public function store(Request $request)
@@ -85,4 +109,48 @@ class VerifikasiUser extends Controller
 
         return redirect()->route('beranda')->with('success', 'Data Anda Berhasil Disimpan.');
     }
-}
+
+    function update(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'nama_lengkap' => 'required|string|max:255',
+            'nik' => 'required|numeric|digits:16',
+            'kelamin' => 'required|string',
+            'tanggal_lahir' => 'required|date',
+            'alamat' => 'required|string|max:255',
+            'foto_ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Foto opsional
+            'foto_sim' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Foto opsional
+        ]);
+    
+        // Cari data pengguna verifikasi
+        $penggunaVerif = penggunaVerif::findOrFail($id);
+    
+        // Proses foto KTP jika diunggah
+        if ($request->hasFile('foto_ktp')) {
+            $fotoKTP = $request->file('foto_ktp');
+            $fotoKTPName = time() . '_ktp_' . $fotoKTP->getClientOriginalName();
+            $fotoKTP->move(public_path('img/ktp'), $fotoKTPName);
+            $penggunaVerif->foto_ktp = 'img/ktp/' . $fotoKTPName;
+        }
+    
+        // Proses foto SIM jika diunggah
+        if ($request->hasFile('foto_sim')) {
+            $fotoSIM = $request->file('foto_sim');
+            $fotoSIMName = time() . '_sim_' . $fotoSIM->getClientOriginalName();
+            $fotoSIM->move(public_path('img/sim'), $fotoSIMName);
+            $penggunaVerif->foto_sim = 'img/sim/' . $fotoSIMName;
+        }
+    
+        // Simpan data lainnya
+        $penggunaVerif->nama_lengkap = $request->nama_lengkap;
+        $penggunaVerif->nik = $request->nik;
+        $penggunaVerif->kelamin = $request->kelamin;
+        $penggunaVerif->tanggal_lahir = $request->tanggal_lahir;
+        $penggunaVerif->alamat = $request->alamat;
+        $penggunaVerif->validasi = 'belum';
+        $penggunaVerif->save();
+    
+        return redirect()->route('beranda')->with('success', 'Data Anda Berhasil Disimpan.');
+    }
+}    

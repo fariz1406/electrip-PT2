@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <img src="{{ ('img/electrip tanpa teks.png') }}" alt="" />
+  <img src="{{ ('img/ElecTrip fix.png') }}" alt="" />
   <div class="container">
     <h1>Masuk</h1>
     @if(session('gagal'))
@@ -26,7 +26,7 @@
         <label for="password">Kata Sandi</label>
         <input type="password" name="password" required />
       </div>
-      <a class="l" href="#">Lupa Sandi</a>
+      <a class="" href="#">Lupa Sandi</a>
       <button type="submit" name="masuk">masuk</button>
       <p>Belum punya akun? <a href="register">Daftar disini</a></p>
     </form>

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ asset('css/register.css') }}">
 </head>
 <body>
-    <img src="{{ ('img/electrip tanpa teks.png') }}" alt="">
+    <img src="{{ ('img/ElecTrip fix.png') }}" alt="">
   <div class="container">
     <h1>Daftar</h1>
 

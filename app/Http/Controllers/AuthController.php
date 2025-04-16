@@ -37,9 +37,14 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    function login()
-    {
+    function login() {
+        $user_id = Auth::id();
+
+        if ($user_id == ""){
         return view('login');
+        } else {
+        return view('beranda');
+        }
     }
     function submitLogin(Request $request)
     {
@@ -48,12 +53,14 @@ class AuthController extends Controller
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
         if (Auth::attempt($data)) {
-            session(['user_id' => Auth::id()]); // Menyimpan ID pengguna ke session
+            session(['user_id' => Auth::id()]);
             $request->session()->regenerate();
 
             if (Auth::user()->role == 'admin') {
                 return redirect()->route('admin.dashboard', compact('dataAda'));
-            } else {
+            }elseif(Auth::user()->role == 'finance') {
+                return redirect()->route('finance.dashboard', compact('dataAda'));
+            }else {
                 return redirect()->route('beranda', compact('dataAda'));
             }
         } else {

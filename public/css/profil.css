@@ -12,143 +12,103 @@ body {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-.container {
-  width: 670px;
-  height: auto;
-  background-color: rgb(235, 233, 233);
-  border-radius: 25px;
-  margin-top: 20px;
+/* Container */
+.profile-container {
+  max-width: 600px;
+  margin-top: 90px;
   margin-left: 35%;
-  margin-bottom: 225px;
-  position: absolute;
-  top: 50px;
-  left: 0px;
-  z-index: 1;
-  box-shadow:0px 0px 1px #848484;
-  justify-content: center;
-  text-align: center;
-
-  
-}
-.wrapper2 {
-  width: 100%;
-  height: 150px;
-  background-color:#FFCC00;
+  background-color: rgb(235, 233, 233);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  position: relative;
-  z-index: 0;
-}
-
-.container h2 {
-  margin-top: 15px;
-  font-size: 30px;
-}
-
-.wrapper-img {
-  width: 100%;
-  display: block;
-  justify-content: center;
   text-align: center;
-  margin-left: 45%;
-  text-align: center;
+  padding: 20px;
+  z-index: 999999;
 }
 
-.image-box {
-  height: 80px;
-  width: 80px;
-  margin-top: 40px;
+
+/* Header */
+.profile-header {
+  padding: 20px;
+}
+
+/* Foto Profil */
+.profile-photo {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
+  border: 3px solid #ffcc00;
+  margin-bottom: 10px;
+  object-fit: cover; /* Memastikan gambar pas dengan area tanpa merusak aspek rasio */
+  object-position: center; /* Fokus pada bagian tengah gambar */
 }
 
-.image-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
+
+.profile-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 5px 0;
 }
 
-.input1 {
-  margin-top: 75px;
+.profile-role {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
 }
 
-.input1 input {
-  height: 30px;
-  width: 300px;
-  background: #ffffff;
-  border: #6e6767;
-  outline:none;
-  border-radius: 11px;
-  color: #0c0c0c;
-  font-size: 1rem;
+/* Info Section */
+.profile-info {
+  text-align: left;
   padding: 0 20px;
 }
 
-.input2 {
+.profile-info h2 {
+  font-size: 20px;
+  color: #111111;
+  margin-bottom: 10px;
 
-  margin-top: 37px;
-}
-.input2 input {
-  height: 30px;
-  width: 300px;
-  background: #ffffff;
-  border: #6e6767;
-  outline:none;
-  border-radius: 11px;
-  color: #0c0c0c;
-  font-size: 1rem;
-  padding: 0 20px;
 }
 
-.input3 {
-
-  margin-top: 37px;
+.profile-info p {
+  font-size: 16px;
+  margin: 5px 0;
+  color: #555;
 }
 
-.input3 textarea{
-  background: #ffffff;
-  border: #6e6767;
-  outline:none;
-  border-radius: 11px;
-  color: #0c0c0c;
-  font-size: 1rem;
-  padding:  5px;
+/* Deskripsi */
+.profile-description {
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+  margin: 10px 0;
+  padding: 0 15px;
+  line-height: 1.5;
 }
 
-.Button {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 20px 0;
-  padding-bottom: 5px;
-  gap: 5%;
-  align-items: end;
+
+/* Actions */
+.profile-actions {
+  margin-top: 20px;
 }
 
-.Button .simpan {
+.btn-edit,
+.btn-logout {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn-edit {
   background-color: #ffcc00;
-  width: 100px;
-  height: 35px;
+  color: #fff;
   border: 1px solid black;
-  color: #0c0c0c;
-  border-radius: 15px;
-  cursor: pointer;
 }
 
-.Button .batal {
-  background-color: #ffffff;
-  width: 100px;
-  height: 35px;
-  border: 1px solid black;
-  color: #0c0c0c;
-  border-radius: 50px;
-  cursor: pointer;
-}
-
-.Button .simpan:hover {
-  background-color: yellow;
-}
-.Button .batal:hover {
-  background-color: red;
+.btn-edit:hover {
+  background-color: #45a049;
 }

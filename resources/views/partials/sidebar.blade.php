@@ -196,11 +196,15 @@
           <a href="{{ route('pesanan.belumDibayar') }}"><span> Pesanan Saya</span></a>
         </li>
         <li>
-          <a href="{{ route('verifikasi.index') }}"><span> Verifikasi</span></a>
+        @if ($verifikasi && $verifikasi->validasi == 'tidak')
+        <a href="{{ route('verifikasi.edit', $verifikasi->user_id) }}"><span> Verifikasi</span></a>
+        @else
+        <a href="{{ route('verifikasi.index') }}"><span> Verifikasi</span></a>
+        @endif
         </li>
         <li class="settings2"><span>Lainnya </span></li>
         <li>
-          <a href="bantuandukungan"><span>Bantuan dan Dukungan</span></a>
+          <a href="{{ route('bantuanDukungan') }}"><span>Bantuan dan Dukungan</span></a>
         </li>
         <li id="logout">
           <form action="{{ route('logout') }}" method="post">
@@ -214,7 +218,11 @@
       <div class="kotak1">
 
         <div class="foto-sidebar">
+          @if ($profil)
           <img src="{{ asset('img/profil/'. optional(Auth::user()->profil)->foto_profil) }} " />
+          @else
+          <img src="{{ asset('img/Profile_user.png') }} " />
+          @endif
         </div>
 
         <h3>{{ Auth::user()->name }}</h3>

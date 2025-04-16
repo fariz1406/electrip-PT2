@@ -15,32 +15,33 @@ class ProfilController extends Controller
         // Ambil user yang sedang login
         $user = Auth::user();
 
-        $user_id = Auth::id();  
-        $dataAda = penggunaVerif::where('user_id', $user_id)->first();  
+        $user_id = Auth::id();
+        $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
 
 
         // Cek apakah user sudah memiliki profil
-        if ($user->profil) {
-            $profil = $user->profil;
-            return view('profil.tampil_sudah', compact('user', 'profil','dataAda','verifikasi'), ['user' => Auth::user()]);
+        if ($profil) {
+            return view('profil.tampil_sudah', compact('user', 'profil', 'dataAda', 'verifikasi'), ['user' => Auth::user()]);
         } else {
             // Jika belum ada profil
-            return view('profil.tampil_belum',compact('verifikasi'), ['user' => Auth::user()]);
+            return view('profil.tampil_belum', compact('verifikasi', 'profil'), ['user' => Auth::user()]);
         }
     }
 
     function tambah()
     {
-        $user_id = Auth::id();  
-        $dataAda = penggunaVerif::where('user_id', $user_id)->first();  
+        $user_id = Auth::id();
+        $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
         // Cek apakah user sudah memiliki profil
-        return view('profil.tambah',compact('dataAda','verifikasi'));
+        return view('profil.tambah', compact('dataAda', 'verifikasi', 'profil'));
     }
 
     function submit(Request $request)
@@ -81,11 +82,11 @@ class ProfilController extends Controller
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
 
-       
 
-        $user_id = Auth::id();  
-        $dataAda = penggunaVerif::where('user_id', $user_id)->first();  
-        return view('profil.edit', compact('user', 'profil','users','dataAda','verifikasi'));
+
+        $user_id = Auth::id();
+        $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        return view('profil.edit', compact('user', 'profil', 'users', 'dataAda', 'verifikasi'));
     }
 
 
@@ -101,9 +102,7 @@ class ProfilController extends Controller
             $newFileName = time() . '_' . $foto_profil->getClientOriginalName();
             $foto_profil->move(public_path('img/profil'), $newFileName);
 
-            // Update path foto_profil di database
             $profil->foto_profil = $newFileName;
-
         }
 
         $profil->telepon = $request->telepon;
@@ -113,7 +112,8 @@ class ProfilController extends Controller
         return redirect()->route('profil.tampil');
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         $profil = Profil::find($id);
         $profil->delete();
         return redirect()->route('profil.tampil');

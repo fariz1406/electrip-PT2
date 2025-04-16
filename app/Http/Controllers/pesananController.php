@@ -8,6 +8,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\penggunaVerif;
+use App\Models\Profil;
 use App\Services\MidtransService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,10 @@ class pesananController extends Controller
         $pesanan = Pesanan::find($id);
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
-        return view('pesanan.checkout', compact('pesanan', 'kendaraan', 'dataAda', 'id'));
+
+        return view('pesanan.checkout', compact('pesanan', 'kendaraan', 'dataAda', 'id', 'profil'));
     }
 
     function submit(Request $request, $id)
@@ -99,6 +102,7 @@ class pesananController extends Controller
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
         $verifikasi = PenggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
         $pesanan = Pesanan::join('kendaraan', 'kendaraan.id', '=', 'pesanan.kendaraan_id')
             ->join('users', 'users.id', '=', 'pesanan.user_id')
@@ -113,17 +117,43 @@ class pesananController extends Controller
             ->first();
 
 
-        return view('pesanan/detail', compact('verifikasi', 'pesanan', 'dataAda'));
+        return view('pesanan/detail', compact('verifikasi', 'pesanan', 'dataAda', 'profil'));
     }
 
     public function updateStatus(Request $request, $id)
     {
         $pesanan = Pesanan::findOrFail($id);
 
-        // Validasi status yang dikirimkan
         $validated = $request->validate([
             'status' => 'required|in:belum_dibayar,diproses,dikirim,dipakai,selesai',
         ]);
+
+        if ($request->status === 'diproses') {
+            $kendaraan = DB::table('kendaraan')
+                ->where('id', $pesanan->kendaraan_id)
+                ->first();
+
+            if ($kendaraan) {
+
+                DB::table('kendaraan')
+                    ->where('id', $kendaraan->id)
+                    ->update(['status' => 'dipakai']);
+            }
+        }
+
+        if ($request->status === 'selesai') {
+            $kendaraan = DB::table('kendaraan')
+                ->where('id', $pesanan->kendaraan_id)
+                ->first(); 
+
+            if ($kendaraan) {
+
+                DB::table('kendaraan')
+                    ->where('id', $kendaraan->id)
+                    ->update(['status' => 'tersedia']);
+            }
+        }
+
 
         // Update status pesanan
         $pesanan->status = $request->status;
@@ -145,14 +175,14 @@ class pesananController extends Controller
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
 
-        // Ambil data pesanan yang belum dibayar
         $dataPesanan = Pesanan::where('user_id', $user->id)
             ->where('status', 'belum_dibayar')
             ->with('kendaraan')
             ->get();
 
-        return view('pesanan/belum_dibayar', compact('status', 'dataPesanan', 'dataAda', 'verifikasi'));
+        return view('pesanan/belum_dibayar', compact('status', 'dataPesanan', 'dataAda', 'verifikasi', 'profil'));
     }
 
     public function order(MidtransService $midtransService, Request $request)
@@ -161,6 +191,7 @@ class pesananController extends Controller
         $user = Auth::user();
         $user_id = Auth::id();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
 
@@ -181,7 +212,7 @@ class pesananController extends Controller
             $snapToken = $payment->snap_token;
         }
 
-        return view('pesanan.order', compact('order', 'snapToken', 'verifikasi', 'dataAda'));
+        return view('pesanan.order', compact('order', 'snapToken', 'verifikasi', 'dataAda', 'profil'));
     }
 
 
@@ -195,6 +226,7 @@ class pesananController extends Controller
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
 
 
         // Ambil data pesanan yang belum dibayar
@@ -203,7 +235,7 @@ class pesananController extends Controller
             ->with('kendaraan')
             ->get();
 
-        return view('pesanan/diproses', compact('status', 'dataPesanan', 'dataAda', 'verifikasi'));
+        return view('pesanan/diproses', compact('status', 'dataPesanan', 'dataAda', 'verifikasi', 'profil'));
     }
 
     function diKirim(Request $request)
@@ -216,6 +248,7 @@ class pesananController extends Controller
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
 
 
         // Ambil data pesanan yang belum dibayar
@@ -224,13 +257,14 @@ class pesananController extends Controller
             ->with('kendaraan')
             ->get();
 
-        return view('pesanan/dikirim', compact('status', 'dataPesanan', 'dataAda', 'verifikasi'));
+        return view('pesanan/dikirim', compact('status', 'dataPesanan', 'dataAda', 'verifikasi', 'profil'));
     }
 
     function map($id)
     {
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
         $pesanan = Pesanan::join('kendaraan', 'kendaraan.id', '=', 'pesanan.kendaraan_id')
             ->join('users', 'users.id', '=', 'pesanan.user_id')
@@ -245,7 +279,7 @@ class pesananController extends Controller
             ->first();
 
 
-        return view('pesanan/map', compact('pesanan', 'dataAda'));
+        return view('pesanan/map', compact('pesanan', 'dataAda', 'profil'));
     }
 
     function diPakai(Request $request)
@@ -258,6 +292,7 @@ class pesananController extends Controller
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
 
 
         // Ambil data pesanan yang belum dibayar
@@ -266,7 +301,7 @@ class pesananController extends Controller
             ->with('kendaraan')
             ->get();
 
-        return view('pesanan/dipakai', compact('status', 'dataPesanan', 'dataAda', 'verifikasi'));
+        return view('pesanan/dipakai', compact('status', 'dataPesanan', 'dataAda', 'verifikasi', 'profil'));
     }
 
     public function tambahDurasi(Request $request, $id)
@@ -284,10 +319,8 @@ class pesananController extends Controller
         $selisihHariTotal = $tanggalMulai->diffInDays($tanggalBaru);
 
         $harga_kendaraan_perhari = $request->harga_per_hari;
-        // $hargaTambahan = $tanggalSelesaiSebelumnya * $harga_kendaraan_perhari;
         $totalHarga = $selisihHariTotal * $harga_kendaraan_perhari;
 
-        // Pastikan tanggal baru lebih besar dari tanggal sebelumnya (tanggal_selesai)
         if ($request->tanggal_selesai <= $pesanan->tanggal_selesai) {
             return redirect()->back()->withErrors(['datetime' => 'Tanggal baru harus lebih besar dari tanggal sebelumnya.']);
         }
@@ -321,6 +354,7 @@ class pesananController extends Controller
 
         $user = Auth::user();
         $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
+        $profil = Profil::where('user_id', $user->id)->first();
 
 
         $dataPesanan = Pesanan::where('user_id', $user->id)
@@ -328,6 +362,6 @@ class pesananController extends Controller
             ->with('kendaraan')
             ->get();
 
-        return view('pesanan/riwayat_pesanan', compact('status', 'dataPesanan', 'dataAda', 'verifikasi'));
+        return view('pesanan/riwayat_pesanan', compact('status', 'dataPesanan', 'dataAda', 'verifikasi', 'profil'));
     }
 }

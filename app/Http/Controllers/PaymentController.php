@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Pesanan;
 use App\Services\MidtransService;
 use Illuminate\Http\Request;
 
@@ -11,7 +13,7 @@ class PaymentController extends Controller
     public function midtransCallback(Request $request, MidtransService $midtransService)
     {
         if ($midtransService->isSignatureKeyVerified()) {
-            $order = $midtransService->getOrder();
+            $order = $midtransService->getPesanan();    
 
             if ($midtransService->getStatus() == 'success') {
                 $order->update([
