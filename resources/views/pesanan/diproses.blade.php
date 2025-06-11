@@ -38,7 +38,7 @@
           <h3>Biaya : RP. {{ $data->biaya }}</h3>
 
           <hr class="garis">
-          <h3 class="alamat">Dikirim pada tanggal {{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('Y-m-d') }} Jam {{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('H:i') }} WIB</h3>
+          <h3 class="alamat">Dikirim pada tanggal {{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('Y-m-d') }} Jam {{ \Carbon\Carbon::parse($data->waktu_jam)->format('H:i') }} WIB</h3>
 
         </div>
 

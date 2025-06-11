@@ -5,60 +5,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pilihan Mobil</title>
-
   <link rel="stylesheet" href="{{ asset('css/pilihanKendaraan.css') }}" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <style>
-    /* Tambahkan CSS untuk popup */
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-    }
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-    .popup.hidden {
-      display: none;
-    }
-
-    .popup .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-    }
-
-    .overlay.hidden {
-      display: none;
-    }
-  </style>
 </head>
 
 <body>
-
   @include('partials.navbar')
+
+  <div id="popup" class="popup-tanggal hidden">
+    <div class="isi-popup-tanggal">
+      <h2>Sebelum Melakukan Penyewaan <br> Pilih
+        <span style="color: #ffcc00;">Tanggal</span> Terlebih Dahulu
+      </h2>
+    </div>
+    <div class="tombol-popup-wrapper-tanggal">
+      <button class="tombol-popup-tanggal oke-popup-tanggal" onclick="tutupPopup()">Oke</button>
+    </div>
+  </div>
+
+  <div class="pemberitahuan">
+    <p>Sebelum memesan, masukkan tanggal mulai dan tanggal selesai sewa terlebih dahulu</p>
+  </div>
 
   <form action="{{ route('pilihanMotor') }}" method="get">
     <div class="pencarian">
-      <input type="text" name="search" placeholder="Cari Disini...." value="{{ $request->get('search') }}">
-      <button><span class="material-symbols-outlined">search</span></button>
+      <input type="date" name="tanggal_mulai" value="{{ request('tanggal_mulai') }}" required>
+      <input type="date" name="tanggal_selesai" value="{{ request('tanggal_selesai') }}" required>
+      <button type="submit"><span class="material-symbols-outlined">search</span></button>
     </div>
   </form>
 
@@ -84,10 +59,9 @@
       <div class="button-wrapper">
         <button class="btn detail" data-nama="{{ $data->nama }}" data-foto="{{ $data->foto }}"
           data-deskripsi="{{ $data->deskripsi }}" data-harga="{{ $data->harga }}"
-          data-tahun="{{ $data->tahun }}" ">DETAIL</button>
-        <a href="{{ route('pesanan.checkout', $data->id) }}" class="text-decoration">
-          <button class="btn beli">PESAN</button>
-        </a>
+          data-tahun="{{ $data->tahun }}" data-stnk="{{ $data->stnk }}">DETAIL</button>
+        <!-- <a href="{{ route('pesanan.checkout', $data->id)}}" class="text-decoration"> -->
+        <button onclick="cekTanggalDanLanjut('{{ route('pesanan.checkout', $data->id) }}')" class="btn beli">PESAN</button>
       </div>
     </div>
     @endforeach
@@ -105,7 +79,7 @@
   <div id="overlay" class="overlay hidden"></div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const popup = document.getElementById("popup-detail");
       const overlay = document.getElementById("overlay");
       const closeBtn = document.querySelector(".close-btn");
@@ -151,6 +125,29 @@
         overlay.classList.add("hidden");
       });
     });
+  </script>
+
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    function cekTanggalDanLanjut(baseUrl) {
+      const mulai = getQueryParam('tanggal_mulai');
+      const selesai = getQueryParam('tanggal_selesai');
+
+      if (!mulai || !selesai) {
+        document.getElementById('popup').classList.add('show');
+      } else {
+        window.location.href = `${baseUrl}?tanggal_mulai=${mulai}&tanggal_selesai=${selesai}`;
+      }
+    }
+
+
+    function tutupPopup() {
+      document.getElementById('popup').classList.remove('show');
+    }
   </script>
 </body>
 

@@ -113,7 +113,6 @@
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: background-color 0.3s, box-shadow 0.3s;
-      width: 90%;
     }
 
     .container .btn:hover {
@@ -128,51 +127,84 @@
 @include('partials.sidebar')
   <div class="container">
     <div class="header">
-      <h1>Detail order</h1>
+      <h1>Detail Pesanan</h1>
     </div>
 
     <div class="content">
       <div class="details">
         <div class="field">
-          <label for="name">ID order:</label>
-          <span id="name">{{ $order->id }}</span>
+          <label for="name">Nama Pemesan:</label>
+          <span id="name">{{ $order->user_name }}</span>
         </div>
 
         <div class="field">
-          <label for="email">Status order:</label>
-          <span id="email">{{ $order->status }}</span>
+          <label for="email">Email Pemesan:</label>
+          <span id="email">{{ $order->user_email }}</span>
         </div>
 
         <div class="field">
-          <label for="vehicle-name">Status Pembayaran:</label>
-          <span id="vehicle-name">{{ $order->payment_status }}</span>
+          <label for="vehicle-name">Merk Kendaraan:</label>
+          <span id="vehicle-name">{{ $order->kendaraan_nama }}</span>
         </div>
 
         <div class="field">
           <label for="price">Biaya:</label>
-          <span id="price">Rp. {{ number_format($order->biaya, 0, ',', '.') }}</span>
+          <span id="price">Rp {{ number_format($order->biaya + $order->biaya_tambahan, 0, ',', '.') }}</span>
         </div>
 
         <div class="field">
           <label for="start-date">Waktu Pakai:</label>
-          <span id="start-date">Tanggal {{ \Carbon\Carbon::parse($order->tanggal_mulai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($order->tanggal_mulai)->format('H:i') }} WIB</span>
+          <span id="start-date">Tanggal {{ \Carbon\Carbon::parse($order->tanggal_mulai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($order->waktu_jam)->format('H:i') }} WIB</span>
         </div>
 
         <div class="field">
           <label for="end-date">Waktu Berakhir:</label>
-          <span id="end-date">Tanggal {{ \Carbon\Carbon::parse($order->tanggal_selesai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($order->tanggal_selesai)->format('H:i') }} WIB</span>
+          <span id="end-date">Tanggal {{ \Carbon\Carbon::parse($order->tanggal_selesai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($order->waktu_jam)->format('H:i') }} WIB</span>
         </div>
 
         <div class="field">
           <label for="address">Lokasi:</label>
           <span id="address">{{ $order->lokasi }}</span>
         </div>
+
+        @if($order->detail_lokasi == "")
+        @else
+        <div class="field">
+          <label for="address">Lokasi Detail:</label>
+          <span id="address">{{ $order->detail_lokasi }}</span>
+        </div>
       </div>
-      
+      @endif
+
+
+      <div class="vehicle-image">
+        <label for="vehicle-image">Gambar Kendaraan:</label>
+        <img id="vehicle-image" src="{{ asset('img/kendaraan/' . $order->kendaraan_foto) }}" alt="Vehicle Image">
+      </div>
     </div>
+
+    <div id="map" class="map"></div>
+
     <a class="btn" id="pay-button">Bayar Sekarang</a>
   </div>
-  
+
+        <script>
+            // Inisialisasi peta
+            var map = L.map('map').setView([{{$order->latitude}}, {{$order->longitude}}], 13);
+
+            // Tambahkan tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Tambahkan marker untuk lokasi order
+            var pesananMarker = L.marker([{{$order->latitude}}, {{$order->longitude}}])
+                .addTo(map)
+                .bindPopup('<b>{{ $order->user_name }}</b><br>{{ $order->kendaraan_nama }}')
+                .openPopup();
+          
+        </script>
 
 </body>
 

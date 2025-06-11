@@ -22,18 +22,59 @@ class KendaraanController extends Controller
         return view('admin.kendaraan.tampil', compact('kendaraan', 'dataAda'));
     }
 
+    function cekKetersediaan(Request $request)
+    {
+        $user_id = Auth::id();
+        $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
+        $tanggalMulai = $request->get('tanggal_mulai');
+        $tanggalSelesai = $request->get('tanggal_selesai');
+
+        $kendaraanQuery = Kendaraan::query();
+
+        if ($tanggalMulai && $tanggalSelesai) {
+            $kendaraanQuery->whereDoesntHave('pesanan', function ($query) use ($tanggalMulai, $tanggalSelesai) {
+                $query->where(function ($q) use ($tanggalMulai, $tanggalSelesai) {
+                    $q->whereBetween('tanggal_mulai', [$tanggalMulai, $tanggalSelesai])
+                        ->orWhereBetween('tanggal_selesai', [$tanggalMulai, $tanggalSelesai])
+                        ->orWhere(function ($q2) use ($tanggalMulai, $tanggalSelesai) {
+                            $q2->where('tanggal_mulai', '<=', $tanggalMulai)
+                                ->where('tanggal_selesai', '>=', $tanggalSelesai);
+                        });
+                });
+            });
+        }
+
+        $kendaraan = $kendaraanQuery->get();
+
+        return view('cek_ketersediaan', compact('kendaraan', 'request', 'dataAda', 'profil'));
+    }
+
     function pilihan(Request $request)
     {
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
         $profil = Profil::where('user_id', $user_id)->first();
+        $tanggalMulai = $request->get('tanggal_mulai');
+        $tanggalSelesai = $request->get('tanggal_selesai');
 
-        if ($request->get('search')) {
-            $kendaraan = Kendaraan::where('kategori_id', '1')->where('status', 'tersedia')->where('nama', 'like', '%' . $request->get('search') . '%')->get();
-        }else{
-            $kendaraan = Kendaraan::where('kategori_id', '1')->where('status', 'tersedia')->get();
+        $kendaraanQuery = Kendaraan::query();
+
+        if ($tanggalMulai && $tanggalSelesai) {
+            $kendaraanQuery->whereDoesntHave('pesanan', function ($query) use ($tanggalMulai, $tanggalSelesai) {
+                $query->where(function ($q) use ($tanggalMulai, $tanggalSelesai) {
+                    $q->whereBetween('tanggal_mulai', [$tanggalMulai, $tanggalSelesai])
+                        ->orWhereBetween('tanggal_selesai', [$tanggalMulai, $tanggalSelesai])
+                        ->orWhere(function ($q2) use ($tanggalMulai, $tanggalSelesai) {
+                            $q2->where('tanggal_mulai', '<=', $tanggalMulai)
+                                ->where('tanggal_selesai', '>=', $tanggalSelesai);
+                        });
+                });
+            });
         }
 
+        $kendaraan = $kendaraanQuery->where('kategori_id', '1')->where('status', 'tersedia')->get();
+        
         return view('pilihanMobil', compact('kendaraan', 'request', 'dataAda', 'profil'));
     }
 
@@ -42,13 +83,25 @@ class KendaraanController extends Controller
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
         $profil = Profil::where('user_id', $user_id)->first();
+        $tanggalMulai = $request->get('tanggal_mulai');
+        $tanggalSelesai = $request->get('tanggal_selesai');
 
-        if ($request->get('search')) {
-            $kendaraan = Kendaraan::where('kategori_id', '2')->where('status', 'tersedia')->where('nama', 'like', '%' . $request->get('search') . '%')->get();
-        }else{
-            $kendaraan = Kendaraan::where('kategori_id', '2')->where('status', 'tersedia')->get();
+        $kendaraanQuery = Kendaraan::query();
+
+        if ($tanggalMulai && $tanggalSelesai) {
+            $kendaraanQuery->whereDoesntHave('pesanan', function ($query) use ($tanggalMulai, $tanggalSelesai) {
+                $query->where(function ($q) use ($tanggalMulai, $tanggalSelesai) {
+                    $q->whereBetween('tanggal_mulai', [$tanggalMulai, $tanggalSelesai])
+                        ->orWhereBetween('tanggal_selesai', [$tanggalMulai, $tanggalSelesai])
+                        ->orWhere(function ($q2) use ($tanggalMulai, $tanggalSelesai) {
+                            $q2->where('tanggal_mulai', '<=', $tanggalMulai)
+                                ->where('tanggal_selesai', '>=', $tanggalSelesai);
+                        });
+                });
+            });
         }
 
+        $kendaraan = $kendaraanQuery->where('kategori_id', '2')->where('status', 'tersedia')->get();
         return view('pilihanMotor', compact('kendaraan', 'request', 'dataAda', 'profil'));
     }
 
@@ -118,7 +171,9 @@ class KendaraanController extends Controller
         $kendaraan = Kendaraan::find($id);
         $user_id = Auth::id();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
-        return view('admin.kendaraan.edit', compact('kendaraan', 'dataAda'));
+        $status_kendaraan = ['tersedia', 'dipakai', 'nonaktif'];
+
+        return view('admin.kendaraan.edit', compact('kendaraan', 'dataAda', 'status_kendaraan'));
     }
 
     function update(Request $request, $id)
@@ -135,19 +190,12 @@ class KendaraanController extends Controller
             $kendaraan->foto = $newFileName;
         }
 
-        if ($request->hasFile('stnk')) {
-            $stnk = $request->file('stnk');
-
-            $newStnkName = time() . '_' . $stnk->getClientOriginalName();
-            $stnk->move(public_path('img/kendaraan'), $newStnkName);
-
-            $kendaraan->stnk = $newStnkName;
-        }
-
         $kendaraan->nama = $request->nama;
         $kendaraan->deskripsi = $request->deskripsi;
         $kendaraan->harga = $request->harga;
         $kendaraan->tahun = $request->tahun;
+        $kendaraan->status = $request->status;
+
         $kendaraan->update();
 
         return redirect()->route('kendaraan.tampil');

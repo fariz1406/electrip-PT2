@@ -58,7 +58,7 @@
         <h3>Biaya : RP. {{ $data->biaya }}</h3>
 
         <hr class="garis">
-        <h3 class="alamat">Mohon segera selesaikan pembayaran dengan mengklik tombol bayar sekarang.</h3>
+        <h3 class="alamat">Mohon segera selesaikan pembayaran dengan mengklik tombol dikanan.</h3>
         <h3 class="alamat">Status : Belum Dibayar</h3>
 
       </div>

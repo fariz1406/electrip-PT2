@@ -7,6 +7,12 @@
   <title>Pesanan saya</title>
   <link rel="stylesheet" href="{{ asset('css/pesanan.css') }}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
 </head>
 
 <body>
@@ -63,9 +69,14 @@
       <div class="text">
         <h2>Merk : {{ $data->kendaraan->nama }}</h2>
         <h3>Biaya : Rp. {{ number_format($data->biaya, 0, ',', '.') }}</h3>
+        @if($data->biaya_tambahan == null)
+
+        @else
+        <h3>Biaya tambahan : Rp. {{ number_format($data->biaya_tambahan, 0, ',', '.') }}</h3>
+        @endif
 
         <hr class="garis">
-        <h3 class="alamat">Berakhir pada tanggal {{ \Carbon\Carbon::parse($data->tanggal_selesai)->format('Y-m-d') }} Jam {{ \Carbon\Carbon::parse($data->tanggal_selesai)->format('H:i') }} WIB</h3>
+        <h3 class="alamat">Berakhir pada tanggal {{ \Carbon\Carbon::parse($data->tanggal_selesai)->format('Y-m-d') }} Jam {{ \Carbon\Carbon::parse($data->waktu_jam)->format('H:i') }} WIB</h3>
 
       </div>
 
@@ -73,9 +84,13 @@
 
       <div class="tombol">
         <form action=""></form>
-        <button class="btn-tambah-durasi" data-order-id="{{ $data->id }}" data-current-end-date="{{ $data->tanggal_selesai }}">
+        <button class="btn-tambah-durasi"
+          data-order-id="{{ $data->id }}"
+          data-current-end-date="{{ $data->tanggal_selesai }}"
+          data-kendaraan-id="{{ $data->kendaraan_id }}">
           Tambah Durasi
         </button>
+
 
       </div>
       <div class="tombol">
@@ -86,18 +101,25 @@
 
     </div>
 
+    @endforeach
+
     <div id="modal-tambah-durasi" class="popup">
-      <form action="{{ route('pesanan.tambahDurasi', $data->id) }}" id="form-tambah-durasi" method="POST">
+      <form id="form-tambah-durasi" method="POST">
+
         <div class="isi-popup">
-          <h2>Silahkan pilih <br>
-            <span style="color: #ffcc00;">Tanggal dan Waktu</span> Terbaru
+          <h2>Silahkan pilih <span style="color: #ffcc00;">Tanggal</span> Terbaru <br>
+            Biaya tambahan dibayar <span style="color: #ffcc00;">cash</span> <br>
+            saat pengembalian
           </h2>
           @csrf
           @method('PUT')
           <input type="hidden" name="order_id" id="order-id">
-          <input type="hidden" name="harga_per_hari" id="harga-per-hari" value="{{ $data->kendaraan->harga }}"> <!-- Harga per hari -->
-          <input type="datetime-local" name="tanggal_selesai" id="datetime" required>
-          <input type="hidden" name="order_id" id="order-id">
+          <input type="hidden" name="harga_per_hari" id="harga-per-hari">
+          @if ($errors->has('tanggal_selesai'))
+          <div style="color: red;">{{ $errors->first('tanggal_selesai') }}</div>
+          @endif
+          <input type="date" name="tanggal_selesai" placeholder="klik disini" id="datetime" class="styled-datepicker" required>
+
 
         </div>
         <div class="tombol-popup-wrapper">
@@ -107,23 +129,22 @@
       </form>
     </div>
 
-    <!-- pop up fungsi selesai -->
-
+    <!-- popup konfirmasi selesai -->
     <div id="modal-konfirmasi-selesai" class="popup">
-    <!-- <form action="{{ route('pesanan.selesai', $data->id) }}" method="POST"> -->
-      <div class="isi-popup">
-        <h2>Apakah Anda Yakin <br>
-          <span style="color: #ffcc00;">Pesanan</span> Telah Selesai?
-        </h2>
-      </div>
-      <div class="tombol-popup-wrapper">
-        <button id="btn-batal-selesai" class="tombol-popup batal-popup" >Batal</button>
-        <button id="btn-ya-selesai" class="tombol-popup oke-popup">Selesai</button>
-      </div>
-    <!-- </form> -->
+      <form id="form-konfirmasi-selesai" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="isi-popup">
+          <h2>Apakah Anda Yakin <br>
+            <span style="color: #ffcc00;">Pesanan</span> Telah Selesai?
+          </h2>
+        </div>
+        <div class="tombol-popup-wrapper">
+          <button type="button" id="btn-batal-selesai" class="tombol-popup batal-popup">Batal</button>
+          <button type="submit" id="btn-ya-selesai" class="tombol-popup oke-popup">Selesai</button>
+        </div>
+      </form>
     </div>
-
-    @endforeach
 
   </div>
 
@@ -131,101 +152,106 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const modal = document.getElementById("modal-tambah-durasi");
+    const modalDurasi = document.getElementById("modal-tambah-durasi");
     const datetimeInput = document.getElementById("datetime");
-    const form = document.getElementById("form-tambah-durasi");
+    const formDurasi = document.getElementById("form-tambah-durasi");
+    const cancelDurasiBtn = document.getElementById("btn-batal");
 
-    // Tombol Batal
-    const cancelButton = document.getElementById("btn-batal");
+    let flatpickrInstance = null;
 
-    // Fungsi untuk menutup modal
-    function closeModal() {
-      modal.style.display = "none"; // Sembunyikan modal
-      datetimeInput.value = ""; // Reset input datetime
+    function openModalDurasi(orderId, currentEndDate) {
+      const kendaraanId = document.querySelector(`.btn-tambah-durasi[data-order-id="${orderId}"]`).getAttribute("data-kendaraan-id");
+      const apiUrl = `/pesanan/disabled-dates/${kendaraanId}/${orderId}`;
+
+      datetimeInput.value = "";
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const disabledDates = data.disabled_dates;
+          const maxDate = data.min_conflict_date;
+
+          formDurasi.setAttribute("action", `/pesanan/tambahDurasi/${orderId}`);
+          document.getElementById("order-id").value = orderId;
+
+          if (flatpickrInstance) {
+            flatpickrInstance.destroy();
+          }
+
+          flatpickrInstance = flatpickr(datetimeInput, {
+            dateFormat: "Y-m-d",
+            minDate: currentEndDate,
+            maxDate: maxDate ?? null,
+            disable: disabledDates
+          });
+
+          modalDurasi.style.display = "block";
+        });
     }
 
-    // Event listener untuk tombol Tambah Durasi
+    function closeModalDurasi() {
+      modalDurasi.style.display = "none";
+      datetimeInput.value = "";
+      if (flatpickrInstance) {
+        flatpickrInstance.destroy();
+        flatpickrInstance = null;
+      }
+    }
+
+    // Tombol Tambah Durasi
     document.querySelectorAll(".btn-tambah-durasi").forEach(button => {
       button.addEventListener("click", function() {
         const orderId = this.getAttribute("data-order-id");
-        const currentEndDate = this.getAttribute("data-current-end-date"); // Ambil tanggal_selesai dari atribut
-        document.getElementById("order-id").value = orderId;
-        datetimeInput.min = currentEndDate; // Set tanggal minimum
-
-        modal.style.display = "block"; // Tampilkan modal
+        const currentEndDate = this.getAttribute("data-current-end-date");
+        openModalDurasi(orderId, currentEndDate);
       });
     });
 
-    // Validasi saat submit form
-    form.addEventListener("submit", function(event) {
+    // Tombol Batal popup durasi
+    cancelDurasiBtn.addEventListener("click", closeModalDurasi);
+
+    // Klik di luar popup untuk menutup
+    window.addEventListener("click", function(event) {
+      if (event.target === modalDurasi) {
+        closeModalDurasi();
+      }
+    });
+
+    // Validasi submit form
+    formDurasi.addEventListener("submit", function(event) {
       const selectedDate = new Date(datetimeInput.value);
       const minDate = new Date(datetimeInput.min);
-
       if (selectedDate < minDate) {
         event.preventDefault();
         alert("Tanggal baru harus lebih besar atau sama dengan tanggal sebelumnya.");
       }
     });
 
-    // Event listener untuk tombol "Batal"
-    cancelButton.addEventListener("click", function() {
-      closeModal(); // Panggil fungsi untuk menutup modal
+    // konfirmasi selesai
+
+    const modalSelesai = document.getElementById("modal-konfirmasi-selesai");
+    const formSelesai = document.getElementById("form-konfirmasi-selesai");
+    const cancelSelesaiBtn = document.getElementById("btn-batal-selesai");
+
+    document.querySelectorAll(".btn-selesai").forEach(button => {
+      button.addEventListener("click", function() {
+        const orderId = this.getAttribute("data-order-id");
+        formSelesai.setAttribute("action", `/pesanan/selesai/${orderId}`);
+        modalSelesai.style.display = "block";
+      });
     });
 
-    // Menutup modal ketika klik di luar modal (opsional)
+    cancelSelesaiBtn.addEventListener("click", () => {
+      modalSelesai.style.display = "none";
+    });
+
     window.addEventListener("click", function(event) {
-      if (event.target === modal) {
-        closeModal(); // Panggil fungsi untuk menutup modal
+      if (event.target === modalSelesai) {
+        modalSelesai.style.display = "none";
       }
     });
   });
 </script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-  const modal = document.getElementById("modal-konfirmasi-selesai");
-  const overlay = document.getElementById("modal-overlay");
-  let selectedOrderId = null; // Menyimpan ID pesanan yang dipilih
-
-  // Event listener untuk tombol "Selesai"
-  document.querySelectorAll(".btn-selesai").forEach(button => {
-    button.addEventListener("click", function () {
-      selectedOrderId = this.getAttribute("data-order-id"); // Ambil ID pesanan
-      modal.style.display = "block";
-      overlay.style.display = "block";
-    });
-  });
-
-  // Event listener untuk tombol "Ya" di modal
-  document.getElementById("btn-ya-selesai").addEventListener("click", function () {
-    if (selectedOrderId) {
-      // Kirim permintaan update status menggunakan fetch
-      fetch(`/pesanan/selesai/${selectedOrderId}`, {
-        method: "PUT",
-        headers: {
-          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-          "Content-Type": "application/json"
-        },
-      })
-
-    }
-    // Tutup modal
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
-
-  // Event listener untuk tombol "Batal" di modal
-  document.getElementById("btn-batal-selesai").addEventListener("click", function () {
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
-
-  // Tutup modal jika overlay diklik
-  overlay.addEventListener("click", function () {
-    modal.style.display = "none";
-    overlay.style.display = "none";
-  });
-});
-</script>
 
 </html>

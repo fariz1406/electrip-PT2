@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: #5b5b5b;
+  background-color: #2B2B3C;
 }
 
 .container {
@@ -11,7 +11,7 @@ body {
     margin-left: 25%;
     height: auto;
     z-index: 0;
-    background-color: #5b5b5b;
+    background-color: #2B2B3C;
     margin-right: 0;
     text-align: center;
 }
@@ -19,38 +19,36 @@ body {
 table {
     width: 95%;
     border-collapse: collapse;
-    color: #ddd;
+    color: #F5F5F5;
     margin-top: 30px;
-    margin-left: 2.5%;
-    box-shadow: 0px 0px 10px black;
-}
-
-table,
-th,
-td {
-    border: 0.5px solid #ddd;
-}
-
-th,
-td {
+    margin-left: 2%;
+    box-shadow: 0px 0px 5px black;
+  }
+  
+  table, th, td {
+    border: 0.5px solid 	#444444;
+  }
+  
+  th, td {
     padding: 8px;
     text-align: center;
     justify-content: center;
-}
-
-th {
-    background-color: #ffcc00;
-    text-shadow: 0px 0px 10px black;
-}
-
-tr td {
+  }
+  
+  th {
+    background-color: #ffc107;
+    color: black;
+  }
+  
+  tr td {
     text-align: center;
     text-shadow: 1px 1px 1px black;
-}
-
-.material-symbols-outlined:hover {
+  }
+  
+  
+  .material-symbols-outlined:hover {
     color: #ffcc00;
-}
+  }
 
 /* Styling untuk elemen select */
 select {

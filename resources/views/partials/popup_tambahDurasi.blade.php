@@ -13,7 +13,7 @@
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0px 0px 10px black;
-      z-index: 9999999999999999999999;
+      z-index: 99;
     }
 
     .isi-popup {

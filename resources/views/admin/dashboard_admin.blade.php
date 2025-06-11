@@ -13,6 +13,7 @@
         <div class="header">
             <h2>Welcome, Admin</h2>
         </div>
+        
         <div class="info-cards">
             <div class="card">
                 <h3>Jumlah Mobil</h3>

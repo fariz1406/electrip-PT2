@@ -69,6 +69,7 @@
                     <input type="file" name="stnk" id="stnk">
                 </div>
 
+
                 <button type="submit" name="simpan">Tambah Kendaraan</button>
             </div>
         </form>

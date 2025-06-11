@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\VerifikasiUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,6 +56,11 @@ class User extends Authenticatable
     public function profil(): HasOne
     {
         return $this->hasOne(Profil::class);
+    }
+
+    public function verifikasi(): HasOne
+    {
+        return $this->hasOne(penggunaVerif::class);
     }
 
     public function pesanan()

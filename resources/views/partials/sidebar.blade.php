@@ -35,7 +35,7 @@
     }
 
     .kotak {
-      width: 289px;
+      width: 370px;
       height: 160px;
       background-color: #ffcc00;
       border-radius: 8px;
@@ -43,16 +43,16 @@
     }
 
     .kotak1 {
-      width: 230px;
+      width: auto;
       height: 69px;
       background-color: #2b2b2b;
       position: absolute;
       top: 57px;
       left: 10px;
       border-radius: 11px;
+      padding-right: 20px;
       z-index: 999;
     }
-
 
     .row ul {
       display: flex;
@@ -90,14 +90,6 @@
       margin-bottom: 5px;
       font-size: 17px;
       opacity: 0.5;
-    }
-
-    #logout a {
-      color: #ffcc00;
-    }
-
-    #logout a:hover {
-      color: #c09b08;
     }
 
     .foto-sidebar {

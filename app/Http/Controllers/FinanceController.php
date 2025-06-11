@@ -59,7 +59,7 @@ class FinanceController extends Controller
 
 
 
-        return view('admin_finance/dashboard_keuangan', compact('pendapatanHariIni', 'pendapatanMingguIni', 'pendapatanBulanIni', 'totalPendapatan', 'kendaraanPalingLaris', 'kendaraanPalingSedikitDisewa', 'jumlahPesananRiwayat'));
+        return view('admin/finance/dashboard_keuangan', compact('pendapatanHariIni', 'pendapatanMingguIni', 'pendapatanBulanIni', 'totalPendapatan', 'kendaraanPalingLaris', 'kendaraanPalingSedikitDisewa', 'jumlahPesananRiwayat'));
     }
 
     function dataPesanan()
@@ -73,12 +73,13 @@ class FinanceController extends Controller
                 'users.name',
                 'kendaraan.nama',
                 'pesanan.biaya',
+                'pesanan.biaya_tambahan',
                 'pesanan.status',
                 'pesanan.tanggal_mulai',
                 'pesanan.tanggal_selesai'
             )
             ->get();
 
-        return view('admin_finance/data_transaksi', compact('dataPesanan'));
+        return view('admin/finance/data_transaksi', compact('dataPesanan'));
     }
 }

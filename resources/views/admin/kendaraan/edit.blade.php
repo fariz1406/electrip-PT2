@@ -81,8 +81,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="stnk">Nomor STNK</label>
-                    <input type="file" name="stnk" id="stnk">
+                    <label for="status_kendaraan">Status Kendaraan:</label>
+                    <select name="status" id="status">
+                        <option value="tersedia">Tersedia</option>
+                        <option value="nonaktif">Nonaktif</option>
+                    </select>
                 </div>
 
 

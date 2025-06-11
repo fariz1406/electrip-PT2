@@ -149,17 +149,17 @@
 
         <div class="field">
           <label for="price">Biaya:</label>
-          <span id="price">Rp. {{ number_format($pesanan->biaya, 0, ',', '.') }}</span>
+          <span id="price">Rp {{ number_format($pesanan->biaya + $pesanan->biaya_tambahan, 0, ',', '.') }}</span>
         </div>
 
         <div class="field">
           <label for="start-date">Waktu Pakai:</label>
-          <span id="start-date">Tanggal {{ \Carbon\Carbon::parse($pesanan->tanggal_mulai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($pesanan->tanggal_mulai)->format('H:i') }} WIB</span>
+          <span id="start-date">Tanggal {{ \Carbon\Carbon::parse($pesanan->tanggal_mulai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($pesanan->waktu_jam)->format('H:i') }} WIB</span>
         </div>
 
         <div class="field">
           <label for="end-date">Waktu Berakhir:</label>
-          <span id="end-date">Tanggal {{ \Carbon\Carbon::parse($pesanan->tanggal_selesai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($pesanan->tanggal_selesai)->format('H:i') }} WIB</span>
+          <span id="end-date">Tanggal {{ \Carbon\Carbon::parse($pesanan->tanggal_selesai)->format('d-m-Y') }} Jam {{ \Carbon\Carbon::parse($pesanan->waktu_jam)->format('H:i') }} WIB</span>
         </div>
 
         <div class="field">

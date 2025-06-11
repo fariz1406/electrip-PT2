@@ -7,6 +7,8 @@ use Exception;
 use Midtrans\Config;
 use Midtrans\Notification;
 use Midtrans\Snap;
+use Illuminate\Support\Facades\Log;
+
 
 class MidtransService
 {
@@ -152,16 +154,28 @@ class MidtransService
      */
     protected function getCustomerDetails(Pesanan $Pesanan): array
     {
-        $user = $Pesanan->users; // Ambil user yang terkait dengan pesanan
+        $user = $Pesanan->pengguna; // Ambil user yang terkait dengan pesanan
 
         return [
             // 'first_name' => $user->name,
             // 'email' => $user->email,
             // 'phone' => $user->name,
 
-            'first_name' => 'Ferdi Indra Satriady',
-            'email' => 'ferd@gmail.com',
+            'first_name' => $user->name,
+            'email' => $user->email,
             'phone' => '085211451129',
         ];
     }
+
+    public function checkTransactionStatus($order_id)
+{
+    try {
+        return \Midtrans\Transaction::status($order_id);
+    } catch (\Exception $e) {
+        logger()->error('Midtrans status check failed: ' . $e->getMessage());
+        return null;
+    }
+}
+
+
 }

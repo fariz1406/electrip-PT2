@@ -20,11 +20,31 @@ class AuthController extends Controller
         return view('admin.data_user', compact('user', 'dataAda'));
     }
 
+    function userDetail($id)
+    {
+        $user_id = Auth::id();
+
+        $data = User::leftJoin('pengguna_profil', 'users.id', '=', 'pengguna_profil.user_id')
+        ->leftJoin('pengguna_verifikasi', 'users.id', '=', 'pengguna_verifikasi.user_id')
+        ->select(
+            'users.*',
+            'pengguna_profil.*',
+            'pengguna_verifikasi.*'
+        )
+        ->where('users.id', $id)
+        ->first();
+    
+
+
+        return view('admin/user_detail', compact('data'));
+    }
+
 
     function register()
     {
         return view('register');
     }
+    
     function submitRegister(Request $request)
     {
         $user = new User();
@@ -34,7 +54,7 @@ class AuthController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect()->route('login');
+        return redirect()->route('beranda');
     }
 
     function login() {

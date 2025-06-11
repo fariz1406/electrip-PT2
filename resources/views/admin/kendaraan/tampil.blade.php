@@ -9,10 +9,25 @@
   <title>List Kendaraan</title>
   <link rel="stylesheet" href="{{ asset('css/admin/data_kendaraan.css') }}">
 </head>
-
+<style>
+  
+  .header {
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin : 10px 20px;
+  }
+  
+</style>
 <body>
   @include('partials.sidebar_admin')
   <div class="container">
+
+  <div class="header">
+      <h2>List Kendaraan</h2>
+    </div>
+
     <a href="{{route('testing')}}"><button class="button-9" role="button">Tambah Kendaraan</button></a>
     <table style="margin-bottom: 30px;">
       <thead>
@@ -44,7 +59,7 @@
             <a href="{{ route('kendaraan.edit', $data->id) }}">Edit</a>
             <form action="{{ route('kendaraan.delete', $data->id) }}" method="POST" onsubmit="return confirmDelete()">
               @csrf
-              <button type="submit" style="background-color: red; padding: 5px; border-radius: 20%;">Hapus</button>
+              <button type="submit" style="background-color: #ffc107; color: black; padding: 5px; border-radius: 20%;">Hapus</button>
             </form>
           </td>
         </tr>

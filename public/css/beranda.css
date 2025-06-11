@@ -1,16 +1,14 @@
 * {
-  text-decoration: none;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-decoration: none;
+    margin: 0px;
+    padding: 0px;
 }
 html {
     background-color: black;
 }
 body {
-  margin: 0px;
-  padding: 0px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    margin: 0px;
+    padding: 0px;
 }
 
 .wrapper1 {
@@ -20,11 +18,11 @@ body {
 #Home {
     width: 100%;
     height: 100vh;
-    background-image:url('/img/latarberanda1.svg');
+    background-image: url("/img/latarberanda1.svg");
     background-size: cover;
     background-position: center;
-
-}.overlay {
+}
+.overlay {
     position: relative;
 }
 
@@ -49,7 +47,7 @@ body {
 }
 
 .overlay-content span {
-color: #FFCC00;
+    color: #ffcc00;
 }
 .overlay-content button {
     font-weight: 300;
@@ -59,14 +57,14 @@ color: #FFCC00;
     background: transparent;
     color: #fff;
     border-radius: 25px;
-    border: 2px solid #FFCC00;
+    border: 2px solid #ffcc00;
     outline: none;
     margin: 25px 0 10px;
     cursor: pointer;
     transition: 0.1s ease;
 }
 .overlay-content button:hover {
-    background: #FFCC00;
+    background: #ffcc00;
 }
 .wrapper2 {
     background-color: black;
@@ -77,11 +75,11 @@ color: #FFCC00;
 }
 .wrapper2 p {
     text-align: center;
-    color :#FFCC00;
+    color: #ffcc00;
     margin-top: 20px;
     font-size: 25px;
     margin-bottom: 70px;
-} 
+}
 .wrapper3 {
     background-color: black;
     color: #ffffff;
@@ -92,13 +90,12 @@ color: #FFCC00;
     font-size: 33px;
     margin-left: 110px;
     text-align: left;
-
 }
 
 .wrapper3 span {
-    color: #FFCC00;
+    color: #ffcc00;
 }
-.wrapper3 button{
+.wrapper3 button {
     font-weight: 300;
     width: 200px;
     padding: 10px 0;
@@ -106,7 +103,7 @@ color: #FFCC00;
     background: transparent;
     color: #fff;
     border-radius: 25px;
-    border: 2px solid #FFCC00;
+    border: 2px solid #ffcc00;
     outline: none;
     margin: 25px 0 10px;
     cursor: pointer;
@@ -114,12 +111,11 @@ color: #FFCC00;
     margin-right: 30px;
     margin-bottom: 40px;
     margin-top: 25px;
-
 }
 .wrapper2 img {
     width: 190px;
     height: 190px;
 }
 .wrapper3 button:hover {
-    background: #FFCC00;
-} 
+    background: #ffcc00;
+}

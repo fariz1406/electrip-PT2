@@ -9,51 +9,57 @@
 </head>
 <style>
   .kelompokAuth {
-          display: flex;
-          gap: 60px;
-        }
-        .buttonLogin {
-          padding: 9px 38px;
-          text-align: center;
-          transition: 0.4s ease;
-          border-radius: 28px;
-          border: solid 1px #ffcc00;
-        }
-        .buttonLogin:hover {
-          background-color: #ffcc00;
-          padding: 9px 38px;
-          text-align: center;
-        }
-        .buttonLogin:hover h3{
-         color: white;
-        }
-        .buttonLogin h3 {
-          color: white;
-          font-size: 35px;
-          font-weight: 500;
-        }
-        .buttonRegister {
-          padding: 9px 38px;
-          text-align: center;
-          transition: 0.4s ease;
-          border-radius: 28px;
-          border: solid 1px #ffcc00;
-        }
-        .buttonRegister:hover {
-          background-color: #ffcc00;
-          padding: 9px 38px;
-          text-align: center;
-        }
+    display: flex;
+    gap: 60px;
+  }
 
-        .buttonRegister:hover h3{
-         color: white;
-        }
-        
-        .buttonRegister h3 {
-          color: white;
-          font-size: 35px;
-          font-weight: 500;
-        }
+  .buttonLogin {
+    padding: 9px 38px;
+    text-align: center;
+    transition: 0.4s ease;
+    border-radius: 28px;
+    border: solid 1px #ffcc00;
+  }
+
+  .buttonLogin:hover {
+    background-color: #ffcc00;
+    padding: 9px 38px;
+    text-align: center;
+  }
+
+  .buttonLogin:hover h3 {
+    color: white;
+  }
+
+  .buttonLogin h3 {
+    color: white;
+    font-size: 35px;
+    font-weight: 500;
+  }
+
+  .buttonRegister {
+    padding: 9px 38px;
+    text-align: center;
+    transition: 0.4s ease;
+    border-radius: 28px;
+    border: solid 1px #ffcc00;
+  }
+
+  .buttonRegister:hover {
+    background-color: #ffcc00;
+    padding: 9px 38px;
+    text-align: center;
+  }
+
+  .buttonRegister:hover h3 {
+    color: white;
+  }
+
+  .buttonRegister h3 {
+    color: white;
+    font-size: 35px;
+    font-weight: 500;
+  }
 
 
 
@@ -131,9 +137,10 @@
 
   @include('partials.navbar')
 
-@if (Auth::id() == "")  
- 
-@else
+
+  @if (Auth::id() == "")
+
+  @else
 
   @if(session('first_login_done') && !$dataAda)
 
@@ -151,7 +158,7 @@
   @elseif(isset($dataAda) && $dataAda->validasi == 'belum')
   <div id="popup" class="popup">
     <div class="isi-popup">
-      <h2>Verifikasi anda sudah terkirim <br>tunggu 
+      <h2>Verifikasi anda sudah terkirim <br>tunggu
         <span style="color: #ffcc00;">Admin</span> menyetujui
       </h2>
     </div>
@@ -163,7 +170,7 @@
   @elseif(isset($dataAda) && $dataAda->validasi == 'tidak')
   <div id="popup" class="popup">
     <div class="isi-popup">
-      <h2>Verifikasi Anda ditolak! <br> harap 
+      <h2>Verifikasi Anda ditolak! <br> harap
         <span style="color: #ffcc00;">Verifikasi</span> ulang
       </h2>
     </div>
@@ -173,41 +180,31 @@
     </div>
   </div>
   @endif
-@endif
+  @endif
   <div class="wrapper1">
     <section id="Home" class="overlay">
       <div class="overlay-content">
-        <h1 class="headerText" >
+        <h1 class="headerText">
           Jelajahi Dunia Luar <br />
           <span>Tanpa Polusi</span>
         </h1>
-       
-        @if (Auth::id() == "")  
+
+        @if (Auth::id() == "")
         <div class="kelompokAuth">
-        <a class="buttonLogin" href="{{ route('login') }}"><h3>Login</h3></a>
-        <a class="buttonRegister" href="{{ route('register') }}"><h3>Register</h3></a>
+          <a class="buttonLogin" href="{{ route('login') }}">
+            <h3>Login</h3>
+          </a>
+          <a class="buttonRegister" href="{{ route('register') }}">
+            <h3>Register</h3>
+          </a>
         </div>
         @else
-        <a class="buttonCTA" href="{{ route('pilihan') }}">PESAN SEKARANG</a>
-        <style>
-            .buttonCTA {
-              text-decoration: none;
-              color: #ffcc00;
-              background-color: #262626;
-              padding: 14px 20px;
-              border-radius: 14px; 
-              transition: 0.6s ease;
-            }
-            .buttonCTA:hover {
-              padding: 16px 24px;
-              background-color: #ffcc00;
-              color: #262626;
-            }
-            
-        </style>
+        
+          <button type="submit" name="pesan">Pesan Sekarang</button>
+        
         @endif
       </div>
-    
+
     </section>
   </div>
   <div class="wrapper2">
@@ -241,72 +238,136 @@
     <!-- <a href="lainnya_Penyedia.php"><button>Klik Disini</button></a> -->
   </div>
 <footer>
+<hr />
   <div class="indukFooter">
     <div class="dalemFooter">
-    <div class="kiriFooter">
-    <img src="{{ asset('img/ElecTrip teks.png') }}" width="150px" height="auto"/>
-    <h4>demi masa depan yang keren</h4>
-    
+      <div class="kiriFooter">
+        <img src="{{ asset('img/ElecTrip teks.png') }}" width="150px" height="auto" />
+        <h4>demi masa depan yang keren</h4>
+      </div>
+      <div class="kananFooter">
+        <div class="menuCol">
+          <h5>Menu</h5>
+          <ul>
+            <li>Home</li>
+            <li>Feature</li>
+            <li>About us</li>
+            <li>Contact</li>
+          </ul>
+        </div>
+        <div class="menuCol">
+          <h5>Support</h5>
+          <ul>
+            <li>Help Center</li>
+            <li>Terms</li>
+            <li>Privacy</li>
+            <li>FAQ</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="kananFooter">
-        <ul>
-          <li>Contact</li>
-          <li>About us</li>
-          <li>Feature</li>
-          <li>Home</li>
-        </ul>
-        <ul>
-          <li>Contact</li>
-          <li>About us</li>
-          <li>Feature</li>
-          <li>Home</li>
-        </ul>
-    </div>
-    </div>
-    <hr>
+    <hr />
     <div class="bawahFooter">
-      Copyright ElecTrip 2024 
+      Copyright ElecTrip 2024
     </div>
   </div>
 </footer>
+
 <style>
   .indukFooter {
     display: flex;
     flex-direction: column;
     padding: 40px;
-    color: #262626;
-    background-color: white;
+    color: white;
+    background-color: #000;
   }
+
   .indukFooter hr {
-    color: black;
-    height: 2px;
+    border: none;
+    border-top: 1px solid #555;
+    margin: 20px 0;
   }
+
   .dalemFooter {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
   }
+
   .kiriFooter {
     display: flex;
     flex-direction: column;
-    justify-content: start;
     gap: 10px;
+    max-width: 300px;
   }
+
   .kiriFooter h4 {
-    color: #262626;
+    color: #ccc;
     font-size: 18px;
   }
+
   .kananFooter {
     display: flex;
-    list-style: none;
-    gap: 30px;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-right: 60px;
   }
+
+  .menuCol {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+  }
+
+  .menuCol h5 {
+    margin-bottom: 10px;
+    color: white;
+    font-size: 16px;
+  }
+
+  .menuCol ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .menuCol li {
+    color: #ccc;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .menuCol li:hover {
+    color: #fff;
+  }
+
   .bawahFooter {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #888;
+    font-size: 14px;
+  }
+
+  /* Optional: Responsive behavior */
+  @media (max-width: 768px) {
+    .dalemFooter {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .kananFooter {
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
   }
 </style>
+
+
 </body>
 <script>
   document.addEventListener('DOMContentLoaded', function() {

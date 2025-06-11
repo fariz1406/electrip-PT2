@@ -115,7 +115,7 @@ class VerifikasiUser extends Controller
         // Validasi input
         $request->validate([
             'nama_lengkap' => 'required|string|max:255',
-            'nik' => 'required|numeric|digits:16',
+            'nik' => 'required|string|max:20',
             'kelamin' => 'required|string',
             'tanggal_lahir' => 'required|date',
             'alamat' => 'required|string|max:255',

@@ -1,232 +1,354 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-
 }
 
 body {
-  background-color: #121212;
+    background-color: #121212;
 }
 
+.pemberitahuan {
+    margin-top: 60px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    color: white;
+}
 .pencarian {
-  margin-top: 75px;
-  display: flex;
-  justify-content: end;
-  gap: 10px;
+    margin-top: 1px;
+    display: flex;
+    gap: 10px;
 }
 
 .pencarian input {
-  height: 40px;
-  width: 220px;
-  padding-left: 10px;
-  border: 2px solid white;
-  background-color: #121212;
-  border-radius: 15px;
-  color: white;
+    height: 40px;
+    width: 220px;
+    padding-left: 10px;
+    border: 2px solid white;
+    background-color: #121212;
+    border-radius: 15px;
+    color: white;
 }
 
-.pencarian button{
-  width: 50px;
-  margin-right: 20px;
-  background-color: #121212;
-  border: 2px solid white;
-  border-radius: 15px;
+.pencarian button {
+    width: 50px;
+    margin-right: 20px;
+    background-color: #121212;
+    border: 2px solid white;
+    border-radius: 15px;
 }
 
 .pencarian button:hover {
-  background-color: #ffcc00;
+    background-color: #ffcc00;
 }
 
 .pencarian button:active {
-  background-color: black;
+    background-color: black;
 }
 
-.material-symbols-outlined{
-  font-size: 20px;
-  color: white;
+.material-symbols-outlined {
+    font-size: 20px;
+    color: white;
 }
 
-.wrap{
-  position: relative;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+.wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
 .wrap ul {
-  display: flex;
-  gap: 50px;  
+    display: flex;
+    gap: 50px;
 }
 
 .wrap ul li {
-  font-size: 4.5vh;
-  list-style-type: none;
+    font-size: 4.5vh;
+    list-style-type: none;
 }
 
-.aktif-sekarang{
-  text-decoration: underline;
-  color: white;
+.aktif-sekarang {
+    text-decoration: underline;
+    color: white;
 }
 
-.wrap ul li a{
-  text-decoration: none;
-  font-family: "Montserrat Alternates", fantasy;
-  color: white;
+.wrap ul li a {
+    text-decoration: none;
+    font-family: "Montserrat Alternates", fantasy;
+    color: white;
 }
 
 .wrap ul li a:hover {
-  text-decoration: underline;
-  text-shadow: 1px 1px 2px #ffcc00;
+    text-decoration: underline;
+    text-shadow: 1px 1px 2px #ffcc00;
 }
 
 .wrap ul li a:active {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .wrapper {
-  position: relative;
-  display: flex;
-  justify-content: end;
+    position: relative;
+    display: flex;
+    justify-content: end;
 }
 
 .box1 {
-  width: 135px;
-  height: 40px;
-  left: 180px;
-  top: 430px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  color: #8c8c8c;
-  border: 1px solid black;
-  display: flex;
-  place-items: center;
-  margin-right: 0;
-  text-decoration: none;
+    width: 135px;
+    height: 40px;
+    left: 180px;
+    top: 430px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #8c8c8c;
+    border: 1px solid black;
+    display: flex;
+    place-items: center;
+    margin-right: 0;
+    text-decoration: none;
 }
 
 .box1 img {
-  right: 295px;
-  bottom: 30px;
-  width: 30px;
+    right: 295px;
+    bottom: 30px;
+    width: 30px;
 }
 
-.box1 p{
-  color: black;
-  font-size: 23px;
-  
+.box1 p {
+    color: black;
+    font-size: 23px;
 }
 .lokasi .box1:hover {
-  background-color: #edede2;
+    background-color: #edede2;
 }
 
 hr {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 /* batas konten bagian atas ( pilihan kendaraan, lokasi) */
 .container {
-  width: 90%;
-  margin: auto;
-  display: flex;
-  gap: 2px;
-  flex-wrap: wrap;
-  justify-content: center;
+    width: 90%;
+    margin: auto;
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card {
-  background-color: #ffcc00;
-  height: 460px;
-  margin: 15px;
-  border-radius: 30px;
-  border: 1px solid black;
-  text-align: center;
-  width: 400px;
-  padding: 20px;
-  box-sizing: border-box;
-  box-shadow: 2px 4px 8px black; 
-  gap: 20px;
+    background-color: #ffcc00;
+    height: 460px;
+    margin: 15px;
+    border-radius: 30px;
+    border: 1px solid black;
+    text-align: center;
+    width: 400px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 2px 4px 8px black;
+    gap: 20px;
 }
 
 .image-box {
-  height: 280px;
-  width: 350px;
+    height: 280px;
+    width: 350px;
 }
 
 .image-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 15px;
 }
 
 .card .teks {
-  display: block;
-  position: relative;
-  justify-content: baseline;
-  text-align: left;
-  font-size: 2.5vh;
-  margin-left: 5%;
-  margin-top: 5px;
+    display: block;
+    position: relative;
+    justify-content: baseline;
+    text-align: left;
+    font-size: 2.5vh;
+    margin-left: 5%;
+    margin-top: 5px;
 }
 
-.text-harga{
-  
+.text-harga {
 }
 
 .text-decoration {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
 }
 
 /* button */
-.button-wrapper{
-  margin-top: 18px;
-  display: flex;
-  justify-content: end;
+.button-wrapper {
+    margin-top: 18px;
+    display: flex;
+    justify-content: end;
 }
 
 .btn {
-  border: none;
-  padding: 12px 24px;
-  border-radius: 24px;
-  font-size: 12px;
-  font-size: 0.8rem;  
-  letter-spacing: 2px;  
-  cursor: pointer;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
 }
-
 
 .detail {
-  background: transparent;
-  color: black;
-  border: 1px solid black;
-  transition: all .3s ease;
-  
+    background: transparent;
+    color: black;
+    border: 1px solid black;
+    transition: all 0.3s ease;
 }
 
-.detail:hover{
-  transform: scale(1.125);
-  color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 255, 255, 0.9);
-  transition: all .3s ease;  
+.detail:hover {
+    transform: scale(1.125);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
 }
 
 .beli {
-  background: black;
-  color: rgba(255,255,255,0.95);
-  filter: drop-shadow(0);
-  font-weight: bold;
-  transition: all .3s ease; 
-  margin-left: 10px;
+    background: black;
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0);
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-left: 10px;
 }
 
-.beli:hover{
-  transform: scale(1.125);  
-  border-color: rgba(255, 255, 255, 0.9);
-  filter: drop-shadow(0 10px 5px rgba(0,0,0,0.125));
-  transition: all .3s ease;    
+.beli:hover {
+    transform: scale(1.125);
+    border-color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.125));
+    transition: all 0.3s ease;
 }
-/* batas button */
+
+.popup-tanggal {
+    position: fixed;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #262626;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px black;
+    z-index: 9999999999999999999999;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s;
+}
+
+/* Tampilkan popup */
+.popup-tanggal.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.isi-popup-tanggal {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* button */
+.tombol-popup-wrapper-tanggal {
+    margin-top: 18px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.tombol-popup-tanggal {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.batal-popup-tanggal {
+    background: transparent;
+    color: #ffcc00;
+    border: 1px solid #ffcc00;
+    transition: all 0.3s ease;
+}
+
+.batal-popup-tanggal:hover {
+    transform: scale(1.125);
+    color: red;
+    border-color: red;
+    transition: all 0.3s ease;
+}
+
+.oke-popup-tanggal {
+    background: #ffcc00;
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0);
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+.oke-popup-tanggal:hover {
+    transform: scale(1.125);
+    border-color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.125));
+    transition: all 0.3s ease;
+    background-color: green;
+}
+
+/* Tambahkan CSS Popup */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.pemberitahuan {
+    color: white;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}

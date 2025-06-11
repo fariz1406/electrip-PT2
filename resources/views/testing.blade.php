@@ -17,21 +17,21 @@
 
         <form action="{{ route('kendaraan.submit') }}" method="post" enctype="multipart/form-data">
             @csrf
-        <!-- Categories Section -->
-        <div class="categories">
-            <div class="category" data-value="1" onclick="selectCategory(this)">
-                <span class="icon">🚗</span>
-                <div class="text">
-                    <h3>Mobil</h3>
+            <!-- Categories Section -->
+            <div class="categories">
+                <div class="category" data-value="1" onclick="selectCategory(this)">
+                    <span class="icon">🚗</span>
+                    <div class="text">
+                        <h3>Mobil</h3>
+                    </div>
+                </div>
+                <div class="category active" data-value="2" onclick="selectCategory(this)">
+                    <span class="icon">🏍</span>
+                    <div class="text">
+                        <h3>Sepeda Motor</h3>
+                    </div>
                 </div>
             </div>
-            <div class="category active" data-value="2" onclick="selectCategory(this)">
-                <span class="icon">🏍</span>
-                <div class="text">
-                    <h3>Sepeda Motor</h3>
-                </div>
-            </div>
-        </div>
 
             <!-- Product Detail Form -->
             <div class="form-section">
@@ -77,15 +77,15 @@
 
 </body>
 <script>
-        function selectCategory(categoryElement) {
-            const categories = document.querySelectorAll('.category');
-            categories.forEach(category => {
-                category.classList.remove('active');
-            });
-            categoryElement.classList.add('active');
-            const selectedValue = categoryElement.getAttribute('data-value');
-            document.getElementById('selected_category').value = selectedValue; // Set nilai kategori_id
-        }
-    </script>
+    function selectCategory(categoryElement) {
+        const categories = document.querySelectorAll('.category');
+        categories.forEach(category => {
+            category.classList.remove('active');
+        });
+        categoryElement.classList.add('active');
+        const selectedValue = categoryElement.getAttribute('data-value');
+        document.getElementById('selected_category').value = selectedValue; // Set nilai kategori_id
+    }
+</script>
 
 </html>

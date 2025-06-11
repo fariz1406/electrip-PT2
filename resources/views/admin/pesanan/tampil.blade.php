@@ -11,14 +11,26 @@
   <link rel="stylesheet" href="{{ asset('css/admin/data_pesanan.css') }}">
 </head>
 
+<style>
+  
+  .header {
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin : 20px;
+  }
+  
+</style>
+
 <body>
   @include('partials.sidebar_admin')
 
   <div class="container">
 
-    <hr>
-
-    <h1>List Pesanan</h1>
+    <div class="header">
+      <h2>List Pesanan</h2>
+    </div>
 
     <table>
       <thead>
@@ -57,10 +69,10 @@
               <button type="submit" style="display: none;">Update Status</button>
             </td>
             <td class="edit">
-                            <a href="{{ route('pesanan.detail', $data->id) }}">
-                                <span class="material-symbols-outlined">edit_square</span>
-                            </a>
-                        </td>
+              <a href="{{ route('pesanan.detail', $data->id) }}">
+                <span class="material-symbols-outlined">edit_square</span>
+              </a>
+            </td>
 
             <!-- Modal konfirmasi -->
             <div id="confirmationModal-{{ $data->id }}" class="confirmationModal" style="display:none; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); padding: 20px; color: white; z-index: 999;">

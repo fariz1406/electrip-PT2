@@ -10,22 +10,33 @@
   <title>List Pengguna</title>
   <link rel="stylesheet" href="{{ asset('css/admin/data_user.css')}}">
 </head>
+<style>
+  .header {
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px;
+  }
+</style>
 
 <body>
-@include('partials.sidebar_admin')
+  @include('partials.sidebar_admin')
 
   <div class="container">
 
-      <hr>
+    <div class="header">
+      <h2>List Semua Pengguna</h2>
+    </div>
 
-    <h1>List Semua Pengguna</h1>
     <table>
       <thead>
         <tr>
           <th>No</th>
           <th>Role</th>
           <th>Nama</th>
-          <th>email</th>
+          <th>Email</th>
+          <th>Detail</th>
         </tr>
       </thead>
       @foreach($user as $data)
@@ -35,6 +46,11 @@
           <td>{{ $data->role }}</td>
           <td>{{ $data->name }}</td>
           <td>{{ $data->email }}</td>
+          <td class="edit">
+            <a href="{{ route('users.detail', $data->id) }}">
+              <span class="material-symbols-outlined">edit_square</span>
+            </a>
+          </td>
 
         </tr>
       </tbody>

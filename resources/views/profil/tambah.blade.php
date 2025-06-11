@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tambah Profil</title>
-  <link rel="stylesheet" href="{{ asset('css/edit_profil.css') }}" />
+  <title>Buat Profil</title>
+  <link rel="stylesheet" href="{{ asset('css/profil/profil_input.css') }}" />
 </head>
 
 <body>
@@ -13,7 +13,6 @@
   @include('partials.navbar')
   @include('partials.sidebar')
 
-  <div class="wrapper2"></div>
   <div class="container">
     <h2>Profil</h2>
     <form action="{{ route('profil.submit') }}" method="post" enctype="multipart/form-data">

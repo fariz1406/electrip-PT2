@@ -1,118 +1,146 @@
 body {
-  background-color: #121212;
+    background-color: #121212;
 }
 
 .container {
-  width: 75%;
-  height: auto;
-  background-color: #262228;
-  margin-right: 0;
-  margin-left: 25%;
-  display: block;
-  margin-top: 55px;
+    width: 75%;
+    height: auto;
+    background-color: #262228;
+    margin-right: 0;
+    margin-left: 25%;
+    display: block;
+    margin-top: 55px;
 }
 
 .pilihan {
-display: flex;
-padding: 5px;
-justify-content: center;
-padding: 20px 0;
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    padding: 20px 0;
 }
 
 .pilihan ul {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-  display: flex;
-  gap: 50px;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    gap: 50px;
 }
 
 ul li {
-  text-decoration: none;
-  color: white;
+    text-decoration: none;
+    color: white;
 }
 
 .pilihan ul li:hover {
-  text-decoration: underline;
-  color: #ffcc00;
+    text-decoration: underline;
+    color: #ffcc00;
 }
 
-
 .card {
-  background-color: #ffcc00;
-  display: flex;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 2px solid black;
+    background-color: #ffcc00;
+    display: flex;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid black;
 }
 
 .image-box {
-  height: 200px;
-  width: 200px;
-  margin-left: 10px;
-  box-shadow: -3px 3px 9px black;
-  border-radius: 15px;
-  
+    height: 200px;
+    width: 200px;
+    margin-left: 10px;
+    box-shadow: -3px 3px 9px black;
+    border-radius: 15px;
 }
 
 .image-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 15px;
 }
 
 .card .text {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 .garis {
-  margin: 10px;
-  width: 0%;
+    margin: 10px;
+    width: 0%;
 }
 
 .alamat {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .text-decoration {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .disini {
-  text-decoration: underline;
-  color: #ffcc00;
+    text-decoration: underline;
+    color: #ffcc00;
 }
 
 .tombol {
-  position: relative;
-  right: 0;
-  width: 15%;
+    position: relative;
+    right: 0;
+    width: 15%;
 }
 
 .tombol button {
-  position: absolute;
-  width: 140px;
-  right: 0;
-  bottom: 0;
-  padding: 5px;
-  border: 1px solid black;
-  border-radius: 15px;
-  background-color: black;
-  color: white;
+    position: absolute;
+    width: 140px;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: black;
+    color: white;
 }
 
 .tombol .done {
-  background-color: green;
+    background-color: green;
 }
 
 .tombol button:hover {
-  background-color: yellow;
-  color: black;
+    background-color: yellow;
+    color: black;
 }
 
 .tombol .done:hover {
-  background-color: black;
-  color: white;
+    background-color: black;
+    color: white;
+}
+
+.flatpickr-calendar {
+    z-index: 9999 !important;
+}
+
+.styled-datepicker {
+    padding: 10px 14px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 20px 10px;
+}
+
+.styled-datepicker:focus {
+    border-color: #ffc107;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
+}
+
+.flatpickr-disabled-date {
+    background: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
 }

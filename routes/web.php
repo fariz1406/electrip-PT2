@@ -10,11 +10,12 @@ use App\Http\Controllers\pesananController;
 use App\Http\Controllers\profilController;
 use App\Http\Controllers\validasiVerif;
 use App\Http\Controllers\VerifikasiUser;
-use App\Models\Profil;
 
 Route::get('/testing', function () {
     return view('testing');
 })->name('testing');
+
+Route::get('/cek',  [KendaraanController::class, 'cekKetersediaan'])->name('cek');
 
 Route::get('/bantuanDukungan', function () {
     return view('bantuandukungan');
@@ -28,12 +29,12 @@ Route::post('/submitLogin', [AuthController::class, 'submitLogin'])->name('submi
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::post('/payment/midtrans-callback', [PaymentController::class, 'midtransCallback']);
+Route::get('/', [VerifikasiUser::class, 'beranda'])->name('beranda');
 
-// Route::middleware('auth', 'pengguna')->group(function () {
+Route::get('/pesanan/disabled-dates/{kendaraanId}/{excludePesananId}', [PesananController::class, 'getDisabledDates']);
+
+Route::middleware('auth', 'pengguna')->group(function () {
     //pengguna
-
-    Route::get('/', [VerifikasiUser::class, 'beranda'])->name('beranda');
 
     Route::get('/pilihan', [KendaraanController::class, 'pilihan'])->name('pilihan');
     Route::get('/pilihanMotor', [KendaraanController::class, 'pilihanMotor'])->name('pilihanMotor');
@@ -59,26 +60,21 @@ Route::post('/payment/midtrans-callback', [PaymentController::class, 'midtransCa
     Route::post('/profil/update/{id}', [ProfilController::class, 'update'])->name('profil.update');
     Route::get('/profil/delete/{id}', [ProfilController::class, 'delete'])->name('profil.delete');
 
-
     Route::get('/Verifikasi/User', [VerifikasiUser::class, 'index'])->name('verifikasi.index');
     Route::post('/Verifikasi/User', [VerifikasiUser::class, 'store'])->name('verifikasi.store');
     Route::get('/Verifikasi/edit/{id}', [VerifikasiUser::class, 'edit'])->name('verifikasi.edit');
     Route::put('/Verifikasi/update/{id}', [VerifikasiUser::class, 'update'])->name('verifikasi.update');
-// });
+});
 
 Route::middleware('auth', 'admin')->group(function () {
     //admin
 
     Route::get('/admin/dashboard', [DashboardAdminController::class, 'jumlah'])->name('admin.dashboard');
 
-    Route::get('/admin/userData', function () {
-        return view('/admin/data_user');
-    })->name('/admin/userData');
-
     Route::get('/kendaraan', [KendaraanController::class, 'tampil'])->name('kendaraan.tampil');
-    Route::get('/kendaraan/tambah', [KendaraanController::class, 'tambah'])->name('kendaraan.tambah');
-    Route::get('/kendaraan/tambahin', [KendaraanController::class, 'tambahin'])->name('kendaraan.tambahin');
-    Route::get('/kendaraan/tambahh', [KendaraanController::class, 'tambah'])->name('kendaraan.tambahh');
+    Route::get('/kendaraan/tambah', function () {
+        return view('admin/kendaraan/tambah');
+    })->name('kendaraan.tambah');
     Route::post('/kendaraan/submit', [KendaraanController::class, 'submit'])->name('kendaraan.submit');
     Route::get('/kendaraan/edit/{id}', [KendaraanController::class, 'edit'])->name('kendaraan.edit');
     Route::post('/kendaraan/update/{id}', [KendaraanController::class, 'update'])->name('kendaraan.update');
@@ -93,7 +89,8 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::put('admin/validasi/{id}', [validasiVerif::class, 'update'])->name('validasi.verifikasi.update');
 
     Route::get('/admin/usersData', [AuthController::class, 'tampil'])->name('users.tampil');
-});
+    Route::get('/admin/user_detail/{id}', [AuthController::class, 'userDetail'])->name('users.detail');
 
-Route::get('/finance/dashboard', [FinanceController::class, 'dashboard'])->name('finance.dashboard');
-Route::get('/finance/dataPesanan', [FinanceController::class, 'dataPesanan'])->name('finance.dataPesanan');
+    Route::get('/admin/finance', [FinanceController::class, 'dashboard'])->name('finance.dashboard');
+    Route::get('/admin/dataPesanan', [FinanceController::class, 'dataPesanan'])->name('finance.dataPesanan');
+});

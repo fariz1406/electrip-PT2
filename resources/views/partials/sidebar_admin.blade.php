@@ -9,141 +9,78 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
-    /* sidebar */
     * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       text-decoration: none;
-      margin: 0px;
-      padding: 0px;
-      font-family: "Poppins", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      font-family: "Poppins", sans-serif;
     }
 
     body {
-      margin: 0px;
-      padding: 0px;
+      background-color: #2B2B3C;
     }
 
     .sidebar {
       width: 25%;
-      height: 100%;
-      background-color: #2b2b2b;
+      height: 100vh;
+      background-color: #1E1E2F;
       position: fixed;
       top: 0;
       left: 0;
-    }
-
-    .kotak {
-      width: 289px;
-      height: 155px;
-      background-color: #ffcc00;
-      border-radius: 8px;
-      position: absolute;
-    }
-
-    .kotak1 {
-      width: 230px;
-      height: 69px;
-      background-color: #2b2b2b;
-      position: absolute;
-      top: 50px;
-      left: 10px;
-      border-radius: 11px;
-      z-index: 999;
-      display: flex;
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-    }
-
-
-    .fotoprofil-box {
-      width: 45px;
-      height: 45px;
-      margin-left: 10px;
-      margin-top: 10px;
-      position: sticky;
-    }
-
-    .fotoprofil-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      border-radius: 50%;
-    }
-
-    .row ul {
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      list-style-type: none;
-      margin: 5px 0;
-      color: #ffffff;
-      margin-top: 170px;
-      z-index: 999;
-      position: absolute;
-      left: 15px;
+      justify-content: flex-start;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-box {
+      background-color: #ffc107;
+      color: #1e1e2f;
+      font-weight: bold;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 30px;
       font-size: 18px;
-      gap: 40px;
     }
 
-    .row ul li a {
-      color: #ffffff;
-    }
-
-    .row ul li a:hover {
-      color: #b1b1af;
-    }
-
-    .row ul li {
-      display: flex;
-      align-items: center;
-    }
-
-    .row ul li span:first-child {
+    .menu {
       flex-grow: 1;
     }
 
-    .row .settings {
-      margin-top: -10px;
-      margin-bottom: 5px;
-      font-size: 17px;
-      opacity: 0.5;
+    .menu-title {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
     }
 
-    #logout a {
-      color: #ffcc00;
+    .sidebar ul {
+      list-style: none;
     }
 
-    #logout a:hover {
-      color: #c09b08;
+    .sidebar ul li {
+      margin: 15px 0;
     }
 
-    .kotak1 p {
-      font-size: 5vh;
-      color: #ffffff;
-
+    .sidebar ul li a {
+      color: #E0E0E0;
+      font-size: 15px;
+      display: block;
+      transition: all 0.2s ease-in-out;
     }
 
-    .row .settings2 {
-      margin-top: 10px;
-      margin-bottom: 2px;
-      font-size: 17px;
-      opacity: 0.5;
+    .sidebar ul li a:hover {
+      color: #ffc107;
+      padding-left: 5px;
     }
-
-    .row .logout {
-      color: #ffcc00;
-    }
-
-    .row ul li a span:hover {
-      color: #ffcc00;
-    }
-
-    .row ul li a .keluar:hover {
-      color: red;
-    }
-
 
     .text-button-sidebar {
 
@@ -155,51 +92,35 @@
       padding: 0;
       color: red;
     }
-
-
-    /* batas sidebar */
   </style>
 </head>
 
 <body>
-  <!-- sidebar -->
   <div class="sidebar">
-    <div class="row">
+    <div class="admin-box">ADMIN</div>
+
+    <div class="menu">
+      <div class="menu-title">Menu</div>
       <ul>
-        <li class="settings">Menu</li>
-        <li>
-          <a href="/admin/dashboard"><span>Dashboard</span> </a>
-        </li>
-        <li>
-          <a href="/admin/usersData"><span>Pengguna</span> </a>
-        </li>
-        <li>
-          <a href="/kendaraan"><span>Kendaraan</span></a>
-        </li>
+        <li><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
+        <li><a href="{{route('users.tampil')}}">Pengguna</a></li>
+        <li><a href="{{route('kendaraan.tampil')}}">Kendaraan</a></li>
         <li><a href="{{route('pesanan.data')}}">Pesanan</a></li>
-        <li>
-          <a href="validasi"><span> Verifikasi</span></a>
-        </li>
-        <li class="settings2"><span>Lainnya </span></li>
-        <li>
-          <a href="bantuandukungan.html"><span></span></a>
-        </li>
-        <li id="logout">
-          <form action="{{ route('logout') }}" method="post">
-            @csrf
-            <button class="text-button-sidebar">Keluar</button>
-          </form>
-        </li>
+        <li><a href="{{route('validasi.verifikasi')}}">Verifikasi</a></li>
+        <li><a href="{{route('finance.dashboard')}}">Rangkuman Pendapatan</a></li>
+        <li><a href="{{route('finance.dataPesanan')}}">Riwayat Transaksi</a></li>
+      </ul>
+
+      <div class="menu-title" style="margin-top: 30px;">Lainnya</div>
+      <ul>
+
+        <form action="{{ route('logout') }}" method="post">
+          @csrf
+          <button class="text-button-sidebar">Keluar</button>
+        </form>
       </ul>
     </div>
-    <div class="kotak">
-      <div class="kotak1">
-        <p>ADMIN</p>
-      </div>
-
-    </div>
   </div>
-  <!-- batas sidebar -->
 </body>
 
 </html>

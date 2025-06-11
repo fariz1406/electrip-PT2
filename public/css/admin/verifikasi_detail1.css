@@ -1,139 +1,136 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-    /* General Styles */
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      color: #333;
-  }
-  
-  body {
-      background-color: #121212;
-  }
-  
-  .container {
-      width: 1091px;
-      height: 714px;
-      margin-left: 25%;
-      padding: 30px;
-      background: #121212;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      color: #FFFFFF;
-  }
-  
-  h1 {
-      font-size: 30px;
-      margin-bottom: 30px;
-      color: #FFFFFF;
-  }
-  
-  /* Card Styles */
-  .card {
-      padding: 25px;
-      border-radius: 12px;
-      background-color: #1E1E1E;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-  }
-  
-  /* Image Section */
-  .image-section {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 25px;
-  }
-  
-  .image-container {
-      text-align: center;
-  }
-  
-  .document-img {
-      width: 240px; /* Lebar KTP/SIM */
-      height: 150px; /* Tinggi KTP/SIM */
-      object-fit: cover;
-      border-radius: 8px;
-      border: 2px solid #ddd;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 10px;
-  }
-  
-  .image-container p {
-      font-size: 14px;
-      color: #BBBBBB;
-      margin: 0;
-  }
-  
-  /* Details Section */
-  .details {
-      text-align: left;
-      margin: 0 auto 30px auto;
-      max-width: 700px;
-      font-size: 18px;
-      line-height: 1.6;
-  }
-  
-  .details p {
-      margin: 10px 0;
-  }
-  
-  .details span {
-      font-weight: bold;
-      color: #BBBBBB;
-  }
-  
-  /* Button Section */
-  .actions {
-      margin-top: 20px;
-  }
-  
-  .btn {
-      padding: 15px 25px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 0 10px;
-      transition: all 0.3s ease-in-out;
-  }
-  
-  .btn.approve {
-      background-color: #4CAF50; /* Bright green for approval */
-      color: white;
-  }
-  
-  .btn.reject {
-      background-color: #F44336; /* Bright red for rejection */
-      color: white;
-  }
-  
-  
-  .btn:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-      .container {
-          width: 90%;
-          padding: 20px;
-      }
-  
-      .document-img {
-          width: 200px;
-          height: 125px;
-      }
-  
-      .details {
-          font-size: 16px;
-      }
-  
-      .btn {
-          width: 100%;
-          margin: 10px 0;
-      }
-  }
-  
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+/* General Styles */
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+body {
+    background-color: #2B2B3C;
+}
+
+.container {
+    width: 1091px;
+    height: 714px;
+    margin-left: 25%;
+    padding: 30px;
+    background: #2B2B3C;
+    text-align: center;
+    color: #ffffff;
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Card Styles */
+.card {
+    padding: 25px;
+    border-radius: 12px;
+    background-color: #1e1e1e;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* Image Section */
+.image-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.image-container {
+    text-align: center;
+}
+
+.document-img {
+    width: 240px; /* Lebar KTP/SIM */
+    height: 150px; /* Tinggi KTP/SIM */
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.image-container p {
+    font-size: 14px;
+    color: #bbbbbb;
+    margin: 0;
+}
+
+/* Details Section */
+.details {
+    text-align: left;
+    margin: 0 auto 30px auto;
+    max-width: 700px;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.details p {
+    margin: 10px 0;
+}
+
+.details span {
+    font-weight: bold;
+    color: #bbbbbb;
+}
+
+/* Button Section */
+.actions {
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn.approve {
+    background-color: #4caf50; /* Bright green for approval */
+    color: white;
+}
+
+.btn.reject {
+    background-color: #f44336; /* Bright red for rejection */
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .document-img {
+        width: 200px;
+        height: 125px;
+    }
+
+    .details {
+        font-size: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 10px 0;
+    }
+}

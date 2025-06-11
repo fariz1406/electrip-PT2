@@ -7,158 +7,175 @@
     <title></title>
 </head>
 <style>
-    /* Background umum dan kontainer utama */
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #121212;
-        color: white;
+    * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        height: 100%;
+        font-family: sans-serif;
+        background-color: #121212;
+        color: #f0f0f0;
+    }
+
+    body {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        overflow: hidden;
     }
 
     .container {
-        background: #FFFFFF;
+        margin-left: 25%;
+        margin-top: 50px;
+        padding: 10px;
+        width: 75%;
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+    }
+
+    h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .input1,
+    .input2,
+    .input3,
+    .input4,
+    .input6,
+    .jenisK,
+    .radio,
+    .Button {
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="file"],
+    textarea {
         width: 100%;
-        max-width: 500px;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        border-left: 5px solid #FFC107;
-        /* Highlight border kiri */
+        padding: 6px;
+        font-size: 12px;
+        background-color: #1e1e1e;
+        border: 1px solid #444;
+        color: #fff;
+        border-radius: 3px;
     }
 
-    /* Judul Halaman */
-    .container h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: #343A40;
-        /* Warna hitam sidebar */
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    /* Input Form */
     .input-text-design {
         width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 14px;
+        padding: 6px;
+        font-size: 12px;
+        background-color: #1e1e1e;
+        border: 1px solid #444;
+        color: #fff;
+        border-radius: 3px;
     }
 
-    /* Label */
+    textarea {
+        resize: vertical;
+    }
+
     label {
-        display: block;
-        margin-top: 10px;
-        font-size: 14px;
-        color: #343A40;
+        font-size: 13px;
+        margin-bottom: 4px;
+        display: inline-block;
     }
 
-    /* Tombol Submit */
-    .btn {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        margin-top: 15px;
-        background-color: #FFC107;
-        color: #FFFFFF;
+    .simpan {
+        margin-top: 20px;
+        padding: 6px 12px;
+        font-size: 13px;
+        background-color: #ffcc00;
         border: none;
-        border-radius: 5px;
+        color: black;
+        border-radius: 3px;
         cursor: pointer;
-        font-size: 16px;
-        text-align: center;
-        font-weight: bold;
     }
 
-    .btn:hover {
-        background-color: #E0A800;
-        /* Warna kuning lebih gelap */
+    .simpan:hover {
+        background-color: rgb(128, 104, 12);
     }
 
-    /* Notifikasi */
-    .alert {
-        padding: 10px;
-        margin-bottom: 15px;
-        border-radius: 5px;
+    .verifikasi-box {
+        padding: 12px 16px;
+        margin: 10px 0;
+        border-radius: 6px;
         font-size: 14px;
-        font-weight: bold;
+        line-height: 1.5;
+        color: #ffffff;
     }
 
-    .verif {
-        margin-left: 320px;
-
+    .verifikasi-menunggu {
+        background-color:rgb(51, 54, 64);
+        /* biru gelap */
+        border-left: 5px solidrgb(57, 59, 66);
     }
 
-    .alert-success {
-        background-color: #D4EDDA;
-        color: #155724;
-        border: 1px solid #C3E6CB;
+    .verifikasi-selesai {
+        background-color: #ffcc00;
+        color: black;
+        /* hijau tua */
+        border-left: 5pxrgb(145, 116, 0);
     }
-
-    .alert-error {
-        background-color: #F8D7DA;
-        color: #721C24;
-        border: 1px solid #F5C6CB;
-    }
-
-
-    /* Sidebar */
-
-    /* Warna tulisan di sidebar */
 </style>
 
 <body>
     @include('partials.navbar')
     @include('partials.sidebar')
 
-@if($dataAda && $dataAda->validasi == 'setuju')
-    <p class="verif">Akun anda sudah terverifikasi</p>
-@elseif($dataAda)
-    <p class="verif">Anda sudah melakukan verifikasi. Mohon menunggu Admin untuk menyetujui</p>
-@else
-    <form action="{{ route('verifikasi.store') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="input1">
-            <input class="input-text-design" name="nama_lengkap" type="text" required placeholder="Nama Lengkap" value="{{ old('nama_lengkap', Auth::user()->nama) }}" />
+    <div class="container">
+        @if($dataAda && $dataAda->validasi == 'setuju')
+        <div class="verifikasi-box verifikasi-selesai">
+            <strong>Anda sudah melakukan verifikasi.</strong>
         </div>
-
-        <div class="input2">
-            <input class="input-text-design" name="nik" type="text" required placeholder="NIK" value="{{ old('nik') }}" />
+        @elseif($dataAda)
+        <div class="verifikasi-box verifikasi-menunggu">
+            <strong>Anda sudah melakukan verifikasi.</strong><br>
+            Mohon menunggu Admin untuk menyetujui.
         </div>
+        @else
+        <form action="{{ route('verifikasi.store') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="input1">
+                <input class="input-text-design" name="nama_lengkap" type="text" required placeholder="Nama Lengkap" value="{{ old('nama_lengkap', Auth::user()->nama) }}" />
+            </div>
 
-        <div class="input2">
-            <input class="input-text-design" name="alamat" type="text" required placeholder="Alamat" value="{{ old('alamat') }}" />
-        </div>
+            <div class="input2">
+                <input class="input-text-design" name="nik" type="text" required placeholder="NIK" value="{{ old('nik') }}" />
+            </div>
 
-        <div class="input5">
-            <label for="tanggal_lahir">Tanggal Lahir</label>
-            <input type="date" name="tanggal_lahir" required value="{{ old('tanggal_lahir') }}" />
-        </div>
+            <div class="input3">
+                <textarea name="alamat" cols="40" rows="6" placeholder="Alamat" value="{{ old('alamat') }}"></textarea>
+            </div>
 
-        <div class="jenisK">
-            <label class="Jenisk"><b>Jenis Kelamin</b></label><br />
-            <input type="radio" name="kelamin" value="pria" required /> Pria<br />
-            <input type="radio" name="kelamin" value="wanita" required /> Wanita<br />
-        </div>
+            <div class="input4">
+                <label for="tanggal_lahir">Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" required value="{{ old('tanggal_lahir') }}" />
+            </div>
 
-        <div class="input6">
-            <label for="foto_ktp">Foto KTP</label>
-            <input type="file" name="foto_ktp" required>
-        </div>
+            <div class="jenisK">
+                <label class="Jenisk"><b>Jenis Kelamin</b></label><br />
+                <input type="radio" name="kelamin" value="pria" required /> Pria<br />
+                <input type="radio" name="kelamin" value="wanita" required /> Wanita<br />
+            </div>
 
-        <div class="input7">
-            <label for="foto_sim">Foto SIM</label>
-            <input type="file" name="foto_sim" required>
-        </div>
+            <div class="input6">
+                <label for="foto_ktp">Foto KTP</label>
+                <input type="file" name="foto_ktp" required>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Kirim Verifikasi</button>
-    </form>
-@endif
+            <div class="input7">
+                <label for="foto_sim">Foto SIM</label>
+                <input type="file" name="foto_sim" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kirim Verifikasi</button>
+        </form>
+        @endif
+    </div>
 </body>
 
 </html>

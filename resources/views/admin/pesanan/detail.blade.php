@@ -11,14 +11,14 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f0f4f8;
+      background-color: #2B2B3C;
     }
 
     .container {
       width: 75%;
       margin-left: 25%;
       padding: 20px;
-      background-color: #5b5b5b;
+      background-color: #2B2B3C;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       color: #f1f1f1;
     }
@@ -31,7 +31,7 @@
     .header h1 {
       margin: 0;
       font-size: 28px;
-      color: #ffffff;
+      color: white;
     }
 
     .content {
@@ -103,8 +103,8 @@
       text-align: center;
       margin: 20px auto 0;
       padding: 10px 20px;
-      background-color: #3498db;
-      color: #fff;
+      background-color: #ffc107;
+      color: black;
       font-size: 16px;
       border: none;
       border-radius: 5px;

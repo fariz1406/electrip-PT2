@@ -11,7 +11,9 @@ use App\Models\penggunaVerif;
 use App\Models\Profil;
 use App\Services\MidtransService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Carbon\CarbonPeriod;
 
 class pesananController extends Controller
 {
@@ -40,7 +42,9 @@ class pesananController extends Controller
         $pesanan->pesan = $request->pesan;
         $pesanan->tanggal_mulai = $request->tanggal_mulai;
         $pesanan->tanggal_selesai = $request->tanggal_selesai;
+        $pesanan->waktu_jam = $request->waktu_jam;
         $pesanan->lokasi = $request->lokasi;
+        $pesanan->detail_lokasi = $request->detail_lokasi;
         $pesanan->latitude = $request->latitude;
         $pesanan->longitude = $request->longitude;
 
@@ -128,7 +132,7 @@ class pesananController extends Controller
             'status' => 'required|in:belum_dibayar,diproses,dikirim,dipakai,selesai',
         ]);
 
-        if ($request->status === 'diproses') {
+        if ($request->status === 'dikirim') {
             $kendaraan = DB::table('kendaraan')
                 ->where('id', $pesanan->kendaraan_id)
                 ->first();
@@ -144,7 +148,7 @@ class pesananController extends Controller
         if ($request->status === 'selesai') {
             $kendaraan = DB::table('kendaraan')
                 ->where('id', $pesanan->kendaraan_id)
-                ->first(); 
+                ->first();
 
             if ($kendaraan) {
 
@@ -194,22 +198,46 @@ class pesananController extends Controller
         $profil = Profil::where('user_id', $user->id)->first();
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
 
+        $order = Pesanan::join('kendaraan', 'kendaraan.id', '=', 'pesanan.kendaraan_id')
+            ->join('users', 'users.id', '=', 'pesanan.user_id')
+            ->select(
+                'pesanan.*',
+                'kendaraan.nama as kendaraan_nama',
+                'kendaraan.foto as kendaraan_foto',
+                'users.name as user_name',
+                'users.email as user_email'
+            )
+            ->where('pesanan.id', $request->route('id'))->first();
 
-        $order = Pesanan::find($request->route('id'));
+        $payment = $order->payments()->latest()->first();
 
-        // get last payment
-        $payment = $order->payments->last() ?? null;
-
-        if ($payment == null || $payment->status == 'EXPIRED') {
+        if ($payment == null || $payment->status === 'EXPIRED') {
+            // Buat Snap Token baru jika belum ada atau sudah expired di DB
             $snapToken = $midtransService->createSnapToken($order);
 
             $order->payments()->create([
-                'pesanan_id' => $request->route('id'),
+                'pesanan_id' => $order->id,
                 'snap_token' => $snapToken,
                 'status' => 'PENDING',
             ]);
         } else {
-            $snapToken = $payment->snap_token;
+            // Cek status transaksi langsung ke Midtrans
+            $midtransStatus = $midtransService->checkTransactionStatus($order->id);
+
+            if (!is_object($midtransStatus) || $midtransStatus->transaction_status === 'expire') {
+
+                // Kalau status expired, buat Snap Token baru
+                $snapToken = $midtransService->createSnapToken($order);
+
+                $order->payments()->create([
+                    'pesanan_id' => $order->id,
+                    'snap_token' => $snapToken,
+                    'status' => 'PENDING',
+                ]);
+            } else {
+                // Transaksi masih aktif, gunakan Snap Token lama
+                $snapToken = $payment->snap_token;
+            }
         }
 
         return view('pesanan.order', compact('order', 'snapToken', 'verifikasi', 'dataAda', 'profil'));
@@ -285,53 +313,95 @@ class pesananController extends Controller
     function diPakai(Request $request)
     {
         $status = 'dipakai';
-        // Ambil ID pengguna dari session
         $user = Auth::user();
-        $user_id = Auth::id();
+        $user_id = $user->id;
+
         $dataAda = penggunaVerif::where('user_id', $user_id)->first();
+        $verifikasi = PenggunaVerif::where('user_id', $user_id)->first();
+        $profil = Profil::where('user_id', $user_id)->first();
 
-        $user = Auth::user();
-        $verifikasi = PenggunaVerif::where('user_id', $user->id)->first();
-        $profil = Profil::where('user_id', $user->id)->first();
-
-
-        // Ambil data pesanan yang belum dibayar
-        $dataPesanan = Pesanan::where('user_id', $user->id)
+        // Ambil data pesanan milik user yang sedang dipakai
+        $dataPesanan = Pesanan::where('user_id', $user_id)
             ->where('status', 'dipakai')
             ->with('kendaraan')
             ->get();
 
-        return view('pesanan/dipakai', compact('status', 'dataPesanan', 'dataAda', 'verifikasi', 'profil'));
+        return view('pesanan/dipakai', compact(
+            'status',
+            'dataPesanan',
+            'dataAda',
+            'verifikasi',
+            'profil'
+        ));
     }
+
+
+
+    public function getDisabledDates($kendaraanId, $excludePesananId)
+    {
+        $pesanans = Pesanan::where('kendaraan_id', $kendaraanId)
+            ->where('id', '!=', $excludePesananId)
+            ->whereIn('status', ['belum_dibayar', 'diproses', 'dikirim', 'dipakai'])
+            ->get();
+
+        $disabledDates = [];
+
+        foreach ($pesanans as $pesanan) {
+            $periode = CarbonPeriod::create($pesanan->tanggal_mulai, $pesanan->tanggal_selesai);
+            foreach ($periode as $date) {
+                $disabledDates[] = $date->format('Y-m-d');
+            }
+        }
+
+        $tanggalTerdekat = $pesanans->where('tanggal_mulai', '>', now())->sortBy('tanggal_mulai')->first()?->tanggal_mulai;
+
+        return response()->json([
+            'disabled_dates' => array_values(array_unique($disabledDates)),
+            'min_conflict_date' => $tanggalTerdekat
+        ]);
+    }
+
 
     public function tambahDurasi(Request $request, $id)
     {
         $request->validate([
-            'tanggal_selesai' => 'required|date|after:now', // Validasi datetime harus setelah saat ini
+            'tanggal_selesai' => 'required|date|after:now',
         ]);
 
-        $pesanan = Pesanan::findOrFail($id);
-
+        $pesanan = Pesanan::with('kendaraan')->findOrFail($id);
         $tanggalMulai = Carbon::parse($pesanan->tanggal_mulai);
         $tanggalSelesaiSebelumnya = Carbon::parse($pesanan->tanggal_selesai);
         $tanggalBaru = Carbon::parse($request->tanggal_selesai);
-        $selisihHariTambahan = $tanggalSelesaiSebelumnya->diffInDays($tanggalBaru);
-        $selisihHariTotal = $tanggalMulai->diffInDays($tanggalBaru);
 
-        $harga_kendaraan_perhari = $request->harga_per_hari;
-        $totalHarga = $selisihHariTotal * $harga_kendaraan_perhari;
+        // Validasi konflik tanggal
+        $tanggalBentrokTerdekat = Pesanan::where('kendaraan_id', $pesanan->kendaraan_id)
+            ->where('id', '!=', $pesanan->id)
+            ->whereIn('status', ['belum_dibayar', 'diproses', 'dikirim', 'dipakai'])
+            ->whereDate('tanggal_mulai', '>', $tanggalSelesaiSebelumnya)
+            ->orderBy('tanggal_mulai', 'asc')
+            ->value('tanggal_mulai');
 
-        if ($request->tanggal_selesai <= $pesanan->tanggal_selesai) {
-            return redirect()->back()->withErrors(['datetime' => 'Tanggal baru harus lebih besar dari tanggal sebelumnya.']);
+        if ($tanggalBentrokTerdekat) {
+            $tanggalBentrokCarbon = Carbon::parse($tanggalBentrokTerdekat);
+            if ($tanggalBaru >= $tanggalBentrokCarbon) {
+                return redirect()->back()->withErrors([
+                    'tanggal_selesai' => 'Anda tidak bisa memperpanjang karena sudah ada pesanan lain mulai tanggal ' . $tanggalBentrokCarbon->format('Y-m-d')
+                ]);
+            }
         }
 
+        // Hitung ulang biaya
+        $harga_perhari = $pesanan->kendaraan->harga;
+        $selisihHari = $tanggalMulai->diffInDays($tanggalBaru);
+        $totalHarga = $harga_perhari * $selisihHari;
 
-        $pesanan->biaya = $totalHarga;
-        $pesanan->tanggal_selesai = $request->tanggal_selesai; // Update tanggal selesai
+        $pesanan->biaya_tambahan = $totalHarga - $pesanan->biaya;
+        $pesanan->tanggal_selesai = $request->tanggal_selesai;
         $pesanan->save();
 
         return redirect()->back()->with('success', 'Durasi berhasil diperbarui.');
     }
+
 
     public function updateSelesai($id)
     {
